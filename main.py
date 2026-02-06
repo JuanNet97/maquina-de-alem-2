@@ -215,7 +215,7 @@ if boton:
 
                 st.markdown(f"""
                 <div class="thesis-box">
-                    <span style="font-size:0.8rem; font-weight:bold; color:#9E9E9E; display:block;">🧬 SIGNIFICANTE ACTIVADO (TESIS)</span>
+                    <span style="font-size:0.8rem; font-weight:bold; color:#9E9E9E; display:block;">SIGNIFICANTE ACTIVADO (TESIS)</span>
                     <span style="color:#D32F2F; font-weight:900; font-size:1.4rem; text-transform:uppercase;">{datos['nombre_meme']}</span><br>
                     {datos['explicacion_meme']}
                 </div>
@@ -254,3 +254,4 @@ if boton:
 
     else:
         st.warning("Por favor ingresá un tema para consultar a la Máquina.")
+
