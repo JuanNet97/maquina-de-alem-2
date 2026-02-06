@@ -224,7 +224,7 @@ if boton:
                st.markdown(f"""
                 <div class="quote-box">
                     &laquo;{datos['cita_historica']}&raquo;
-                    <div class="quote-author">— {datos['autor_cita']}</div>
+                    <div class="quote-author">- {datos['autor_cita']}</div>
                 </div>
                 """, unsafe_allow_html=True)
 
@@ -254,5 +254,6 @@ if boton:
 
     else:
         st.warning("Por favor ingresá un tema para consultar a la Máquina.")
+
 
 
