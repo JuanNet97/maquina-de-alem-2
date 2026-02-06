@@ -128,6 +128,8 @@ st.markdown("""
         color: #FFFFFF !important;
         background-color: #000000 !important;
     }
+    </style>
+    """, unsafe_allow_html=True)
 
 # --- 2. CONEXIÓN CON OPENAI ---
 if "OPENAI_API_KEY" in st.secrets:
@@ -141,10 +143,12 @@ else:
 def cargar_conocimiento():
     try:
         with open("conocimiento.txt", "r", encoding="utf-8") as f:
-            return f.read() # Se eliminó el [:80000]
+            return f.read() 
     except FileNotFoundError:
         st.error("⚠️ Error: Falta el archivo 'conocimiento.txt'. Cárgalo en GitHub.")
         st.stop()
+
+base_de_conocimiento = cargar_conocimiento()
 
 # --- 4. INTERFAZ DE USUARIO ---
 
@@ -221,7 +225,7 @@ if boton:
                 </div>
                 """, unsafe_allow_html=True)
 
-               st.markdown(f"""
+                st.markdown(f"""
                 <div class="quote-box">
                     &laquo;{datos['cita_historica']}&raquo;
                     <div class="quote-author">- {datos['autor_cita']}</div>
@@ -254,6 +258,4 @@ if boton:
 
     else:
         st.warning("Por favor ingresá un tema para consultar a la Máquina.")
-
-
 
