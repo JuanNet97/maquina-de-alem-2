@@ -96,12 +96,12 @@ st.markdown("""
         font-family: 'Helvetica', sans-serif;
     }
 
-    /* BOTONES */
-    .stButton>button { 
-        background-color: #212121 !important; 
-        color: white !important; 
-        border: none !important; 
-        font-weight: bold; 
+   /* BOTONES (Corrección de contraste) */
+    .stButton > button { 
+        background-color: #212121 !important; /* Fondo Negro */
+        color: #FFFFFF !important; /* TEXTO BLANCO PURO OBLIGATORIO */
+        border: 2px solid #212121 !important; 
+        font-weight: 900 !important; 
         width: 100%; 
         padding: 15px; 
         font-size: 1.1rem;
@@ -109,12 +109,25 @@ st.markdown("""
         transition: 0.3s; 
         border-radius: 5px;
     }
-    .stButton>button:hover { 
+    
+    /* Arreglo específico: A veces Streamlit usa etiquetas <p> dentro del botón */
+    .stButton > button p {
+        color: #FFFFFF !important; 
+    }
+
+    /* Estado Hover (Al pasar el mouse/dedo) */
+    .stButton > button:hover { 
         background-color: #424242 !important; 
+        color: #FFFFFF !important;
+        border-color: #424242 !important;
         transform: translateY(-2px); 
     }
-    </style>
-    """, unsafe_allow_html=True)
+    
+    /* Estado Focus/Active (Al hacer click) */
+    .stButton > button:focus, .stButton > button:active {
+        color: #FFFFFF !important;
+        background-color: #000000 !important;
+    }
 
 # --- 2. CONEXIÓN CON OPENAI ---
 if "OPENAI_API_KEY" in st.secrets:
@@ -253,4 +266,5 @@ if boton:
                 # Si falla por Rate Limit (el error 429), le avisamos amablemente al usuario
                 if "429" in str(e):
                     st.error("🚦 La Máquina está saturada (Límite de velocidad de OpenAI). Esperá 1 minuto y probá de nuevo.")
+
 
