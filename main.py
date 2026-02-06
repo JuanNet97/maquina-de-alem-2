@@ -221,10 +221,10 @@ if boton:
                 </div>
                 """, unsafe_allow_html=True)
 
-                st.markdown(f"""
+               st.markdown(f"""
                 <div class="quote-box">
-                    «{datos['cita_historica']}»
-                    <div style="text-align:right; font-weight:bold; color:#B71C1C; margin-top:5px;">— {datos['autor_cita']}</div>
+                    &laquo;{datos['cita_historica']}&raquo;
+                    <div class="quote-author">— {datos['autor_cita']}</div>
                 </div>
                 """, unsafe_allow_html=True)
 
@@ -254,4 +254,5 @@ if boton:
 
     else:
         st.warning("Por favor ingresá un tema para consultar a la Máquina.")
+
 
