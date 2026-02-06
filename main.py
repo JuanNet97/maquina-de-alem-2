@@ -144,7 +144,7 @@ if boton:
             try:
                 # 1. GPT piensa
                 respuesta = client.chat.completions.create(
-                    model="gpt-4-turbo-preview",
+                    model="gpt-4o-mini",
                     response_format={"type": "json_object"},
                     messages=[
                         {"role": "system", "content": prompt},
@@ -197,4 +197,5 @@ if boton:
             except Exception as e:
                 st.error(f"Error: {e}")
     else:
+
         st.warning("Escribí un tema.")
