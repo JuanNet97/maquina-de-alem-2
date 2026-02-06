@@ -136,20 +136,15 @@ else:
     st.error("⚠️ CRÍTICO: No se detectó la API Key. Configurala en 'Secrets'.")
     st.stop()
 
-# --- 3. CARGA DE CONOCIMIENTO (CEREBRO) ---
+# --- 3. CARGA DE CONOCIMIENTO (SIN LÍMITES) ---
 @st.cache_data
 def cargar_conocimiento():
     try:
         with open("conocimiento.txt", "r", encoding="utf-8") as f:
-            # Leemos el archivo. Si es GIGANTE (libros enteros), cortamos en 80k caracteres
-            # para no saturar la memoria de contexto, pero mantenemos la calidad.
-            texto = f.read()
-            return texto[:80000] 
+            return f.read() # Se eliminó el [:80000]
     except FileNotFoundError:
         st.error("⚠️ Error: Falta el archivo 'conocimiento.txt'. Cárgalo en GitHub.")
         st.stop()
-
-base_de_conocimiento = cargar_conocimiento()
 
 # --- 4. INTERFAZ DE USUARIO ---
 
@@ -169,11 +164,11 @@ with col2:
 # --- 5. LÓGICA DE PROCESAMIENTO ---
 if boton:
     if tema_usuario:
-        with st.spinner("Analizando protocolos de la Tesis y Discursos Históricos..."):
+        with st.spinner("Procesando Archivo Histórico completo..."):
             
-            # --- EL PROMPT MAESTRO (Volvimos a la versión detallada) ---
+            # --- PROMPT PARA GPT-4o-MINI ---
             prompt_sistema = f"""
-            Eres "La Máquina de Alem", la conciencia histórica y digital de la Unión Cívica Radical.
+            Eres "La Máquina de Alem", la conciencia histórica de la UCR.
             
             TU CEREBRO (Base de Conocimiento):
             --- INICIO TEXTO ---
@@ -181,73 +176,65 @@ if boton:
             --- FIN TEXTO ---
 
             TU MISIÓN:
-            El usuario ingresa un tema actual sobre el cual el partido guarda silencio.
-            Tú debes responder basándote EXCLUSIVAMENTE en la teoría de la Tesis (latencia, reparación, ética, institucionalidad) y los discursos históricos provistos.
+            El usuario ingresa un tema actual. Responde basándote en la Tesis y los Discursos.
 
-            REGLAS DE RAZONAMIENTO:
-            1. **No inventes fechas:** Extrae el año y autor EXACTO del encabezado de los discursos en el texto provisto.
-            2. **Identifica el Significante:** Usa los conceptos de la tesis (ej: "La Reparación", "La Intransigencia", "El Rezo Laico", "La Ética Pública").
-            3. **Estilo:** Sé contundente, irónico si es necesario, y épico. Habla como la historia juzgando al presente.
+            REGLAS DE BÚSQUEDA (IMPORTANTE):
+            1. **VARIEDAD OBLIGATORIA:** Tienes discursos de Alem, Yrigoyen, Larralde, Illia, Balbín y Alfonsín. NO CITES SIEMPRE A ALFONSÍN. Busca activamente citas de los fundadores o de la intransigencia si aplican.
+            2. **Cita Textual:** Extrae la frase exacta y el AÑO del texto provisto. No inventes.
+            3. **Significante:** Relaciona el tema con un concepto de la tesis.
 
-            FORMATO DE SALIDA (JSON Puro):
-            1. "frase_radical": Una sentencia política breve y poderosa sobre el tema (Slogan).
-            2. "nombre_meme": El nombre exacto del concepto de la tesis que aplica.
-            3. "explicacion_meme": Explicación de por qué este concepto teórico resuelve esta crisis.
-            4. "cita_historica": Una cita textual del archivo que funcione como evidencia.
-            5. "autor_cita": Autor y Año (ej: "Leandro N. Alem, 1896").
-            6. "prompt_meme": Descripción visual para un poster de propaganda política.
+            FORMATO JSON:
+            1. "frase_radical": Slogan político contundente.
+            2. "nombre_meme": Concepto de la tesis.
+            3. "explicacion_meme": Justificación teórica.
+            4. "cita_historica": Cita textual (Priorizar autores distintos a Alfonsín si es posible).
+            5. "autor_cita": Autor y Año.
+            6. "prompt_meme": Descripción visual para poster político.
             """
 
             try:
-                # VOLVEMOS AL MODELO TURBO (Mejor calidad de razonamiento)
+                # MODELO GPT-4o-MINI (Rápido, Barato, Gran Memoria)
                 respuesta = client.chat.completions.create(
                     model="gpt-4o-mini", 
                     response_format={"type": "json_object"},
                     messages=[
                         {"role": "system", "content": prompt_sistema},
-                        {"role": "user", "content": f"El tema es: {tema_usuario}"}
+                        {"role": "user", "content": f"El tema es: {tema_usuario}. (Busca variedad histórica en la cita)."}
                     ],
-                    temperature=0.6 # Un poco más de creatividad para la frase
+                    temperature=0.7 
                 )
                 
                 datos = json.loads(respuesta.choices[0].message.content)
 
-                # --- MOSTRAR RESULTADOS ---
-                
-                # 1. LA FRASE (Headline)
+                # OUTPUTS (Con corrección HTML para móvil)
                 st.markdown(f"""
                 <div class="headline-box">
-                    "{datos['frase_radical']}"
+                    <p>"{datos['frase_radical']}"</p>
                 </div>
                 """, unsafe_allow_html=True)
 
-                # 2. EL SIGNIFICANTE (Tesis)
                 st.markdown(f"""
                 <div class="thesis-box">
-                    <span class="thesis-label">🧬 SIGNIFICANTE ACTIVADO (TESIS)</span>
-                    <span class="meme-name">{datos['nombre_meme']}</span>
+                    <span style="font-size:0.8rem; font-weight:bold; color:#9E9E9E; display:block;">🧬 SIGNIFICANTE ACTIVADO (TESIS)</span>
+                    <span style="color:#D32F2F; font-weight:900; font-size:1.4rem; text-transform:uppercase;">{datos['nombre_meme']}</span><br>
                     {datos['explicacion_meme']}
                 </div>
                 """, unsafe_allow_html=True)
 
-                # 3. LA EVIDENCIA (Archivo)
                 st.markdown(f"""
                 <div class="quote-box">
                     «{datos['cita_historica']}»
-                    <div class="quote-author">— {datos['autor_cita']}</div>
+                    <div style="text-align:right; font-weight:bold; color:#B71C1C; margin-top:5px;">— {datos['autor_cita']}</div>
                 </div>
                 """, unsafe_allow_html=True)
 
-                # 4. EL MEME (Imagen con Simbología)
+                # IMAGEN
                 if generar_img:
                     st.write("---")
                     st.markdown("**📢 Propaganda Generada por la Máquina:**")
                     with st.spinner("Inyectando simbología partidaria en DALL-E..."):
                         
-                        # INYECCIÓN DE SÍMBOLOS UCR (Hardcoded para asegurar estética)
                         simbologia_obligatoria = "Argentine Radical Civic Union aesthetics, white berets (boinas blancas), red and white flags, vintage propaganda poster style, high contrast red/white/black palette"
-                        
-                        # Armamos el prompt final sumando lo que imaginó la IA + los símbolos obligatorios
                         prompt_final_imagen = f"{simbologia_obligatoria}. {datos['prompt_meme']}. Text in Spanish: '{datos['frase_radical']}'"
                         
                         try:
@@ -260,11 +247,10 @@ if boton:
                             )
                             st.image(img_res.data[0].url, caption=f"Concepto Visual: {datos['frase_radical']}")
                         except Exception as e:
-                            st.warning(f"No se pudo generar la imagen (Posible error de API o contenido): {e}")
+                            st.warning(f"No se pudo generar la imagen: {e}")
 
             except Exception as e:
-                # Si falla por Rate Limit (el error 429), le avisamos amablemente al usuario
-                if "429" in str(e):
-                    st.error("🚦 La Máquina está saturada (Límite de velocidad de OpenAI). Esperá 1 minuto y probá de nuevo.")
+                st.error(f"Error de sistema: {e}")
 
-
+    else:
+        st.warning("Por favor ingresá un tema para consultar a la Máquina.")
