@@ -7,17 +7,32 @@ st.set_page_config(page_title="La Máquina de Alem", page_icon="🇦🇷", layou
 
 st.markdown("""
     <style>
-    /* Fondo y Estructura */
-    .stApp { background-color: #f4f4f4; border-top: 20px solid #D32F2F; }
+    /* 1. FONDO Y ESTRUCTURA (Forzamos !important para anular modo oscuro) */
+    .stApp { 
+        background-color: #f4f4f4 !important; 
+        border-top: 20px solid #D32F2F !important; 
+    }
     
-    /* Tipografía */
-    h1 { color: #D32F2F; font-family: 'Helvetica', sans-serif; font-weight: 900; text-transform: uppercase; letter-spacing: -1px; margin-bottom: 5px; }
-    h3 { font-family: 'Georgia', serif; font-style: italic; color: #555; }
+    /* 2. TIPOGRAFÍA */
+    h1 { 
+        color: #D32F2F !important; 
+        font-family: 'Helvetica', sans-serif; 
+        font-weight: 900; 
+        text-transform: uppercase; 
+        letter-spacing: -1px; 
+        margin-bottom: 5px; 
+    }
     
-    /* CAJA 1: LA FRASE RADICAL (Impacto Visual) */
+    /* Subtítulos y textos generales */
+    h3, p, .stMarkdown { 
+        font-family: 'Georgia', serif; 
+        color: #333333 !important;
+    }
+    
+    /* CAJA 1: LA FRASE RADICAL (Impacto) */
     .headline-box {
-        background-color: #D32F2F;
-        color: white;
+        background-color: #D32F2F !important;
+        color: white !important;
         padding: 30px;
         text-align: center;
         font-family: 'Arial Black', sans-serif;
@@ -27,16 +42,16 @@ st.markdown("""
         margin-bottom: 25px;
         box-shadow: 0 5px 15px rgba(211, 47, 47, 0.3);
         line-height: 1.1;
-        border: 2px solid #B71C1C;
+        border: 2px solid #B71C1C !important;
     }
 
-    /* CAJA 2: EL MEME DE LA TESIS (Análisis Teórico) */
+    /* CAJA 2: TESIS (Análisis) */
     .thesis-box {
-        background-color: #fff;
+        background-color: #fff !important;
         padding: 25px;
-        border-left: 10px solid #212121; /* Negro Radical */
+        border-left: 10px solid #212121 !important;
         font-family: 'Georgia', serif;
-        color: #333;
+        color: #333 !important;
         margin-bottom: 20px;
         box-shadow: 0 2px 5px rgba(0,0,0,0.05);
         font-size: 1.05rem;
@@ -45,14 +60,14 @@ st.markdown("""
     .thesis-label {
         font-size: 0.8rem;
         font-weight: 800;
-        color: #9E9E9E;
+        color: #9E9E9E !important;
         text-transform: uppercase;
         display: block;
         margin-bottom: 5px;
         letter-spacing: 2px;
     }
     .meme-name {
-        color: #D32F2F;
+        color: #D32F2F !important;
         font-weight: 900;
         font-size: 1.4rem;
         text-transform: uppercase;
@@ -60,13 +75,13 @@ st.markdown("""
         margin-bottom: 10px;
     }
     
-    /* CAJA 3: EVIDENCIA HISTÓRICA (Cita) */
+    /* CAJA 3: EVIDENCIA (Cita) */
     .quote-box {
-        background-color: #ECEFF1;
+        background-color: #ECEFF1 !important;
         padding: 20px;
         font-style: italic;
-        border-right: 8px solid #B71C1C;
-        color: #37474F;
+        border-right: 8px solid #B71C1C !important;
+        color: #37474F !important;
         margin-bottom: 25px;
         font-size: 1rem;
         border-radius: 5px;
@@ -74,18 +89,18 @@ st.markdown("""
     .quote-author {
         text-align: right;
         font-weight: bold;
-        color: #B71C1C;
+        color: #B71C1C !important;
         font-size: 0.9rem;
         margin-top: 10px;
         text-transform: uppercase;
         font-family: 'Helvetica', sans-serif;
     }
 
-    /* Botón */
+    /* BOTONES */
     .stButton>button { 
-        background-color: #212121; 
-        color: white; 
-        border: none; 
+        background-color: #212121 !important; 
+        color: white !important; 
+        border: none !important; 
         font-weight: bold; 
         width: 100%; 
         padding: 15px; 
@@ -94,7 +109,10 @@ st.markdown("""
         transition: 0.3s; 
         border-radius: 5px;
     }
-    .stButton>button:hover { background-color: #424242; transform: translateY(-2px); }
+    .stButton>button:hover { 
+        background-color: #424242 !important; 
+        transform: translateY(-2px); 
+    }
     </style>
     """, unsafe_allow_html=True)
 
@@ -235,3 +253,4 @@ if boton:
                 # Si falla por Rate Limit (el error 429), le avisamos amablemente al usuario
                 if "429" in str(e):
                     st.error("🚦 La Máquina está saturada (Límite de velocidad de OpenAI). Esperá 1 minuto y probá de nuevo.")
+
