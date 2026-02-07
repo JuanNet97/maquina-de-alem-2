@@ -238,31 +238,50 @@ if boton:
                 """, unsafe_allow_html=True)
 
                 # IMAGEN
+               # --- BLOQUE DE IMAGEN REFINADO ---
                 if generar_img:
                     st.write("---")
                     st.markdown("**📢 Propaganda Generada por la Máquina:**")
                     with st.spinner("Inyectando simbología partidaria en DALL-E..."):
                         
-                        simbologia_obligatoria = "Argentine Radical Civic Union aesthetics, white berets (boinas blancas), red and white flags, vintage propaganda poster style, high contrast red/white/black palette"
-                        prompt_final_imagen = f"{simbologia_obligatoria}. {datos['prompt_meme']}. Text in Spanish: '{datos['frase_radical']}'"
+                        # --- NUEVAS INSTRUCCIONES VISUALES DE ALTA PRECISIÓN ---
+                        # 1. Estilo: Litografía política vintage, textura de papel viejo y granulado.
+                        # 2. Colores: Estricto rojo, blanco y tinta negra. Alto contraste.
+                        # 3. Símbolos Clave: Boinas blancas en masa, banderas rojas y blancas de la UCR.
+                        # 4. Elementos Institucionales: Escudo de la UCR (sol naciente, martillo y pluma), texto "LISTA 3".
+                        # 5. Atmósfera: Épica de movilización callejera democrática (estilo 1983).
+                        
+                        simbologia_obligatoria = """
+                        Vintage political propaganda poster style from Argentina (1983 era), lithography texture on grainy paper. 
+                        Strict Red and White color palette with black ink contrast. 
+                        Key elements: Massive crowd wearing white berets (boinas blancas), numerous red and white UCR flags, 
+                        iconography of the UCR shield (rising sun, hammer and quill pen emblem), "LISTA 3" text on banners. 
+                        Atmosphere of epic democratic mobilization.
+                        """
+                        
+                        # Combinamos: Simbología obligatoria + Descripción del concepto + El texto a incluir
+                        prompt_final_imagen = f"{simbologia_obligatoria}. Poster depicting: {datos['prompt_meme']}. Big bold text overlay in Spanish: '{datos['frase_radical']}'"
                         
                         try:
+                            # Usamos 'vivid' para colores más potentes y 'hd' para que se lean mejor los textos
                             img_res = client.images.generate(
                                 model="dall-e-3",
                                 prompt=prompt_final_imagen,
                                 n=1,
                                 size="1024x1024",
-                                quality="standard"
+                                quality="hd", 
+                                style="vivid" 
                             )
                             st.image(img_res.data[0].url, caption=f"Concepto Visual: {datos['frase_radical']}")
                         except Exception as e:
-                            st.warning(f"No se pudo generar la imagen: {e}")
+                            st.warning(f"No se pudo generar la imagen (Posible error de API o contenido): {e}")
 
             except Exception as e:
                 st.error(f"Error de sistema: {e}")
 
     else:
         st.warning("Por favor ingresá un tema para consultar a la Máquina.")
+
 
 
 
