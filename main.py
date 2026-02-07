@@ -241,23 +241,37 @@ if boton:
                 st.markdown(html_cita, unsafe_allow_html=True)
 
                 # --- GENERACIÓN DE IMAGEN COMPLEJA ---
+                # --- GENERACIÓN DE IMAGEN CON SIMBOLOGÍA ADAPTATIVA ---
                 if generar_img:
                     st.write("---")
                     st.markdown("**📢 Propaganda Generada por la Máquina:**")
                     with st.spinner(f"Renderizando estética: {datos.get('estilo_visual', 'ÉPICA CALLEJERA')}..."):
                         
-                        # DICCIONARIO DE ESTILOS (El "Kit" de cada estética)
+                        # DICCIONARIO DE ESTILOS + SIMBOLOGÍA ESPECÍFICA
                         ESTILOS_UCR = {
-                            "ÉPICA CALLEJERA": "Vintage political lithography poster style (Argentina 1983 era), grainy paper texture. Massive crowd, white berets (boinas blancas), red and white flags. Emotional atmosphere.",
-                            "INSTITUCIONAL SOLEMNE": "Brutalist architecture style, imposing stone facade of a Congress or court building. The UCR shield emblem engraved in marble block. Dramatic lighting, grave and serious atmosphere. Red accents on grey stone.",
-                            "MODERNISMO ABSTRACTO": "Contemporary Swiss design poster style, minimalist typography. Abstract geometric shapes in strict red and white palette. Clean lines, futuristic and conceptual symbolism."
+                            "ÉPICA CALLEJERA": """
+                                Style: Vintage political lithography poster (Argentina 1983), grainy paper texture. 
+                                Symbols: Massive crowd wearing white berets (boinas blancas), waving red and white UCR flags. 
+                                Vibe: Emotional, democratic mobilization, dusty and historical.
+                                """,
+                            "INSTITUCIONAL SOLEMNE": """
+                                Style: Brutalist or Neoclassical architecture, imposing stone facade of a Congress building. 
+                                Symbols: The UCR shield emblem (hammer and quill) subtly engraved in marble or bronze on the wall. No crowds. 
+                                Vibe: Serious, heavy, corruption-fighting, unshakeable justice.
+                                """,
+                            "MODERNISMO ABSTRACTO": """
+                                Style: Contemporary Swiss design poster, minimalist typography, clean lines. 
+                                Symbols: Abstract geometric deconstruction of the UCR shield. Use of negative space. 
+                                Colors: Strict Red (#D32F2F) and White palette. Text 'LISTA 3' integrated artistically. 
+                                Vibe: Futuristic, intellectual, clean.
+                                """
                         }
                         
-                        # Seleccionamos el kit correspondiente a la elección de GPT (con un fallback por seguridad)
+                        # Seleccionamos el kit correspondiente
                         estilo_elegido = ESTILOS_UCR.get(datos.get('estilo_visual'), ESTILOS_UCR["ÉPICA CALLEJERA"])
                         
-                        # Armamos el prompt final: Estilo + Escena específica + Texto
-                        prompt_final_imagen = f"{estilo_elegido}. Scene description: {datos['prompt_meme']}. Text overlay in Spanish: '{datos['frase_radical']}'"
+                        # Prompt Final: Estilo + Descripción de la escena (del cerebro) + Texto
+                        prompt_final_imagen = f"{estilo_elegido}. Specific Scene: {datos['prompt_meme']}. Main Text overlay in Spanish: '{datos['frase_radical']}'"
                         
                         try:
                             img_res = client.images.generate(
@@ -277,6 +291,7 @@ if boton:
 
     else:
         st.warning("Por favor ingresá un tema para consultar a la Máquina.")
+
 
 
 
