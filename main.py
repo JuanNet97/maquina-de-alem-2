@@ -254,7 +254,7 @@ if boton:
                         simbologia_obligatoria = """
                         Vintage political propaganda poster style from Argentina (1983 era), lithography texture on grainy paper. 
                         Strict Red and White color palette with black ink contrast. 
-                        Key elements: Massive crowd wearing white berets (boinas blancas), numerous red and white UCR flags, 
+                        Key elements: crowd wearing white berets (boinas blancas), red and white UCR flags, 
                         iconography of the UCR shield (rising sun, hammer and quill pen emblem), "LISTA 3" text on banners. 
                         Atmosphere of epic democratic mobilization.
                         """
@@ -281,6 +281,7 @@ if boton:
 
     else:
         st.warning("Por favor ingresá un tema para consultar a la Máquina.")
+
 
 
 
