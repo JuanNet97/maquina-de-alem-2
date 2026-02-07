@@ -155,8 +155,13 @@ base_de_conocimiento = cargar_conocimiento()
 st.title("/// LA MÁQUINA DE ALEM")
 st.markdown("### ¿Qué dice el radicalismo sobre...")
 
-st.info("Esta IA está alimentada por la **Tesis de Maestría en Comunicación Política de Juan Ignacio Net** y el **Archivo Histórico de la UCR**. Recuperá la voz del partido.")
+st.info("""
+**PROYECTO ACADÉMICO EXPERIMENTAL** Desarrollado en el marco de la **Maestría en Comunicación Política de la Universidad Austral**.
 
+Esta inteligencia artificial está alimentada exclusivamente por los resultados de la investigación sobre los discursos de los máximos referentes históricos de la Unión Cívica Radical.
+
+⚙️ *El modelo se encuentra actualmente en fase de calibración.*
+"""
 tema_usuario = st.text_input("", placeholder="Ej: El veto a las universidades, los jubilados, la corrupción...")
 
 col1, col2 = st.columns([0.65, 0.35])
@@ -258,4 +263,5 @@ if boton:
 
     else:
         st.warning("Por favor ingresá un tema para consultar a la Máquina.")
+
 
