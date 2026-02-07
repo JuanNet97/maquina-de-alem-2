@@ -171,110 +171,106 @@ with col2:
     generar_img = st.checkbox("Generar Meme", value=True)
 
 # --- 5. LÓGICA DE PROCESAMIENTO ---
+# --- 6. LÓGICA DE PROCESAMIENTO ---
 if boton:
     if tema_usuario:
         with st.spinner("Procesando Archivo Histórico completo..."):
             
-            # --- PROMPT PARA GPT-4o-MINI ---
+            # --- NUEVO PROMPT CON SELECTOR DE ESTILOS ---
             prompt_sistema = f"""
             Eres "La Máquina de Alem", la conciencia histórica de la UCR.
             
-            TU CEREBRO (Base de Conocimiento):
-            --- INICIO TEXTO ---
+            CEREBRO (Base de Conocimiento):
             {base_de_conocimiento}
-            --- FIN TEXTO ---
 
-            TU MISIÓN:
-            El usuario ingresa un tema actual. Responde basándote en la Tesis y los Discursos.
+            MISIÓN: Responde al tema del usuario basándote en la Tesis y los Discursos.
 
-            REGLAS DE BÚSQUEDA (IMPORTANTE):
-            1. **VARIEDAD OBLIGATORIA:** Tienes discursos de Alem, Yrigoyen, Larralde, Illia, Balbín y Alfonsín. NO CITES SIEMPRE A ALFONSÍN. Busca activamente citas de los fundadores o de la intransigencia si aplican.
-            2. **Cita Textual:** Extrae la frase exacta y el AÑO del texto provisto. No inventes.
-            3. **Significante:** Relaciona el tema con un concepto de la tesis.
+            REGLAS:
+            1. VARIEDAD HISTÓRICA: Prioriza citas de Alem, Yrigoyen, Larralde, Illia sobre Alfonsín si es posible.
+            2. EVIDENCIA: Extrae frase y AÑO exacto.
+
+            **SELECTOR VISUAL (IMPORTANTE):**
+            Debes elegir UNO de estos 3 estilos visuales para la imagen, según el tono del tema:
+            - "ÉPICA CALLEJERA": Para temas de movilización, democracia, lucha popular. (Estilo: Vintage 1983, boinas blancas, multitud).
+            - "INSTITUCIONAL SOLEMNE": Para temas de corrupción, justicia, leyes graves. (Estilo: Arquitectura brutalista, mármol, escudo UCR en piedra, serio).
+            - "MODERNISMO ABSTRACTO": Para temas de futuro, educación, economía, ideas. (Estilo: Diseño suizo minimalista, geométrico rojo/blanco, conceptual).
 
             FORMATO JSON:
-            1. "frase_radical": Slogan político contundente.
+            1. "frase_radical": Slogan político.
             2. "nombre_meme": Concepto de la tesis.
-            3. "explicacion_meme": Justificación teórica.
-            4. "cita_historica": Cita textual (Priorizar autores distintos a Alfonsín si es posible).
+            3. "explicacion_meme": Justificación.
+            4. "cita_historica": Cita textual.
             5. "autor_cita": Autor y Año.
-            6. "prompt_meme": Descripción visual para poster político.
+            6. "estilo_visual": ELIGE UNO: "ÉPICA CALLEJERA", "INSTITUCIONAL SOLEMNE" o "MODERNISMO ABSTRACTO".
+            7. "prompt_meme": Descripción visual específica de la escena (sin mencionar el estilo general).
             """
 
             try:
-                # MODELO GPT-4o-MINI (Rápido, Barato, Gran Memoria)
+                # MODELO GPT-4o-MINI
                 respuesta = client.chat.completions.create(
                     model="gpt-4o-mini", 
                     response_format={"type": "json_object"},
                     messages=[
                         {"role": "system", "content": prompt_sistema},
-                        {"role": "user", "content": f"El tema es: {tema_usuario}. (Busca variedad histórica en la cita)."}
+                        {"role": "user", "content": f"Tema: {tema_usuario}."}
                     ],
                     temperature=0.7 
                 )
                 
                 datos = json.loads(respuesta.choices[0].message.content)
 
-                # OUTPUTS (Con corrección HTML para móvil)
-                st.markdown(f"""
-                <div class="headline-box">
-                    <p>"{datos['frase_radical']}"</p>
-                </div>
-                """, unsafe_allow_html=True)
+                # OUTPUTS DE TEXTO
+                html_frase = f"""<div class="headline-box"><p>"{datos['frase_radical']}"</p></div>"""
+                st.markdown(html_frase, unsafe_allow_html=True)
 
-                st.markdown(f"""
+                html_tesis = f"""
                 <div class="thesis-box">
-                    <span style="font-size:0.8rem; font-weight:bold; color:#9E9E9E; display:block;">SIGNIFICANTE ACTIVADO (TESIS)</span>
+                    <span style="font-size:0.8rem; font-weight:bold; color:#9E9E9E; display:block;">🧬 SIGNIFICANTE ACTIVADO (TESIS)</span>
                     <span style="color:#D32F2F; font-weight:900; font-size:1.4rem; text-transform:uppercase;">{datos['nombre_meme']}</span><br>
                     {datos['explicacion_meme']}
                 </div>
-                """, unsafe_allow_html=True)
+                """
+                st.markdown(html_tesis, unsafe_allow_html=True)
 
-                st.markdown(f"""
+                html_cita = f"""
                 <div class="quote-box">
                     &laquo;{datos['cita_historica']}&raquo;
-                    <div class="quote-author">- {datos['autor_cita']}</div>
+                    <div style="text-align:right; font-weight:bold; color:#B71C1C; margin-top:5px;">&mdash; {datos['autor_cita']}</div>
                 </div>
-                """, unsafe_allow_html=True)
+                """
+                st.markdown(html_cita, unsafe_allow_html=True)
 
-                # IMAGEN
-               # --- BLOQUE DE IMAGEN REFINADO ---
+                # --- GENERACIÓN DE IMAGEN COMPLEJA ---
                 if generar_img:
                     st.write("---")
                     st.markdown("**📢 Propaganda Generada por la Máquina:**")
-                    with st.spinner("Inyectando simbología partidaria en DALL-E..."):
+                    with st.spinner(f"Renderizando estética: {datos.get('estilo_visual', 'ÉPICA CALLEJERA')}..."):
                         
-                        # --- NUEVAS INSTRUCCIONES VISUALES DE ALTA PRECISIÓN ---
-                        # 1. Estilo: Litografía política vintage, textura de papel viejo y granulado.
-                        # 2. Colores: Estricto rojo, blanco y tinta negra. Alto contraste.
-                        # 3. Símbolos Clave: Boinas blancas en masa, banderas rojas y blancas de la UCR.
-                        # 4. Elementos Institucionales: Escudo de la UCR (sol naciente, martillo y pluma), texto "LISTA 3".
-                        # 5. Atmósfera: Épica de movilización callejera democrática (estilo 1983).
+                        # DICCIONARIO DE ESTILOS (El "Kit" de cada estética)
+                        ESTILOS_UCR = {
+                            "ÉPICA CALLEJERA": "Vintage political lithography poster style (Argentina 1983 era), grainy paper texture. Massive crowd, white berets (boinas blancas), red and white flags. Emotional atmosphere.",
+                            "INSTITUCIONAL SOLEMNE": "Brutalist architecture style, imposing stone facade of a Congress or court building. The UCR shield emblem engraved in marble block. Dramatic lighting, grave and serious atmosphere. Red accents on grey stone.",
+                            "MODERNISMO ABSTRACTO": "Contemporary Swiss design poster style, minimalist typography. Abstract geometric shapes in strict red and white palette. Clean lines, futuristic and conceptual symbolism."
+                        }
                         
-                        simbologia_obligatoria = """
-                        Vintage political propaganda poster style from Argentina (1983 era), lithography texture on grainy paper. 
-                        Strict Red and White color palette with black ink contrast. 
-                        Key elements: crowd wearing white berets (boinas blancas), red and white UCR flags, 
-                        iconography of the UCR shield (rising sun, hammer and quill pen emblem), "LISTA 3" text on banners. 
-                        Atmosphere of epic democratic mobilization.
-                        """
+                        # Seleccionamos el kit correspondiente a la elección de GPT (con un fallback por seguridad)
+                        estilo_elegido = ESTILOS_UCR.get(datos.get('estilo_visual'), ESTILOS_UCR["ÉPICA CALLEJERA"])
                         
-                        # Combinamos: Simbología obligatoria + Descripción del concepto + El texto a incluir
-                        prompt_final_imagen = f"{simbologia_obligatoria}. Poster depicting: {datos['prompt_meme']}. Big bold text overlay in Spanish: '{datos['frase_radical']}'"
+                        # Armamos el prompt final: Estilo + Escena específica + Texto
+                        prompt_final_imagen = f"{estilo_elegido}. Scene description: {datos['prompt_meme']}. Text overlay in Spanish: '{datos['frase_radical']}'"
                         
                         try:
-                            # Usamos 'vivid' para colores más potentes y 'hd' para que se lean mejor los textos
                             img_res = client.images.generate(
                                 model="dall-e-3",
                                 prompt=prompt_final_imagen,
                                 n=1,
                                 size="1024x1024",
-                                quality="hd", 
-                                style="vivid" 
+                                quality="hd",
+                                style="vivid"
                             )
-                            st.image(img_res.data[0].url, caption=f"Concepto Visual: {datos['frase_radical']}")
+                            st.image(img_res.data[0].url, caption=f"Estética: {datos.get('estilo_visual', 'ÉPICA CALLEJERA')}")
                         except Exception as e:
-                            st.warning(f"No se pudo generar la imagen (Posible error de API o contenido): {e}")
+                            st.warning(f"No se pudo generar la imagen: {e}")
 
             except Exception as e:
                 st.error(f"Error de sistema: {e}")
