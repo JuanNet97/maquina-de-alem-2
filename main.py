@@ -156,9 +156,9 @@ st.title("/// LA MÁQUINA DE ALEM")
 st.markdown("### ¿Qué dice el radicalismo sobre...")
 
 st.info("""
-**PROYECTO ACADÉMICO EXPERIMENTAL** Desarrollado en el marco de la **Maestría en Comunicación Política de la Universidad Austral**.
+**PROYECTO ACADÉMICO EXPERIMENTAL** Desarrollado en el marco de la investigación de Juan Ignacio Net como parte de su trabajo final de la **Maestría en Comunicación Política de la Universidad Austral**.
 
-Esta inteligencia artificial está alimentada exclusivamente por los resultados de la investigación sobre los discursos de los máximos referentes históricos de la Unión Cívica Radical.
+Esta API está alimentada exclusivamente por los resultados de la investigación sobre los discursos de los máximos referentes históricos de la Unión Cívica Radical.
 
 ⚙️ *El modelo se encuentra actualmente en fase de calibración.*
 """)
@@ -263,6 +263,7 @@ if boton:
 
     else:
         st.warning("Por favor ingresá un tema para consultar a la Máquina.")
+
 
 
 
