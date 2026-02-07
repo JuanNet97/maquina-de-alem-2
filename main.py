@@ -161,7 +161,7 @@ st.info("""
 Esta inteligencia artificial está alimentada exclusivamente por los resultados de la investigación sobre los discursos de los máximos referentes históricos de la Unión Cívica Radical.
 
 ⚙️ *El modelo se encuentra actualmente en fase de calibración.*
-"""
+""")
 tema_usuario = st.text_input("", placeholder="Ej: El veto a las universidades, los jubilados, la corrupción...")
 
 col1, col2 = st.columns([0.65, 0.35])
@@ -263,5 +263,6 @@ if boton:
 
     else:
         st.warning("Por favor ingresá un tema para consultar a la Máquina.")
+
 
 
