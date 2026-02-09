@@ -1,7 +1,6 @@
 import streamlit as st
 from openai import OpenAI
 import json
-import random
 
 # --- 1. CONFIGURACIÓN VISUAL (ESTÉTICA COMPLETA) ---
 st.set_page_config(page_title="La Máquina de Alem", page_icon="🇦🇷", layout="centered")
@@ -175,54 +174,43 @@ with col2:
 # --- 6. LÓGICA DE PROCESAMIENTO ---
 if boton:
     if tema_usuario:
-        with st.spinner("Convocando a los espíritus del Comité Nacional..."):
+        with st.spinner("Analizando doctrina histórica..."):
             
-            # --- LA RULETA HISTÓRICA (NUEVO) ---
-            # Forzamos a que elija uno de estos autores para romper el sesgo de Alfonsín.
-            lista_proceres = [
-                "Leandro N. Alem (El Fundador)",
-                "Hipólito Yrigoyen (El Reparador)",
-                "Marcelo T. de Alvear (El Institucionalista)",
-                "Moisés Lebensohn (La Intransigencia)",
-                "Crisólogo Larralde (El autor del 14 bis)",
-                "Arturo Illia (La Honestidad)",
-                "Ricardo Balbín (La Unión Nacional)",
-                "Raúl Alfonsín (La Democracia)"
-            ]
-            
-            # Elegimos uno al azar
-            autor_elegido = random.choice(lista_proceres)
-            
-            # --- PROMPT MAESTRO (INSTRUCCIÓN DE BÚSQUEDA) ---
+            # --- PROMPT DE ANÁLISIS POLÍTICO (CEREBRO) ---
+            # En lugar de jugar a los dados, le pedimos que piense como el tesista.
             prompt_sistema = f"""
-            Eres "La Máquina de Alem".
+            Eres el sistema experto "La Máquina de Alem". Tu cerebro es EXCLUSIVAMENTE esta Tesis de Maestría y el Archivo Histórico de la UCR.
             
-            CEREBRO (Tesis y Discursos):
+            TEXTO FUENTE:
             {base_de_conocimiento}
 
             TU MISIÓN:
-            El usuario pregunta: "{tema_usuario}".
+            El usuario plantea el tema: "{tema_usuario}".
             
-            🔴 INSTRUCCIÓN DE PRIORIDAD MÁXIMA:
-            Debes responder canalizando la voz y el pensamiento de: **{autor_elegido}**.
-            Busca en el texto provisto citas o referencias conceptuales de este autor específico.
-            
-            SI EL AUTOR ES YRIGOYEN O ALVEAR: Esfuérzate por encontrar sus palabras en la tesis. Si no hay una cita exacta sobre el tema, usa una frase suya sobre un tema similar (ética, república, economía) y adáptala conceptualmente.
+            No respondas con frases hechas. Construye una **LÍNEA ARGUMENTAL RADICAL** basada en los conceptos de la Tesis.
+
+            PASOS DE RAZONAMIENTO OBLIGATORIOS:
+            1. **Filtro Teórico:** ¿Qué "Significante" de la Tesis explica este conflicto? (Ej: ¿Es un atropello institucional? -> Aplica "La República". ¿Es exclusión social? -> Aplica "La Reparación" o "La Ética").
+            2. **Desarrollo Discursivo:** Redacta el argumento político. ¿Por qué la UCR se opone o apoya esto basándose en su historia? Usa el tono de la "Intransigencia" si es necesario.
+            3. **Evidencia:** Busca la cita histórica que MEJOR encaje con el argumento.
+               - Si Alem o Yrigoyen tienen algo sobre el *principio* (justicia, libertad, honor), úsalos a ellos primero.
+               - Si no, usa a Alfonsín o Illia.
+               - **PROHIBIDO INVENTAR:** Si la cita no existe en el texto, no la pongas.
 
             **SELECTOR VISUAL:**
-            Elige el estilo visual adecuado:
-            - "ÉPICA CALLEJERA": (Multitudes, boinas blancas).
-            - "INSTITUCIONAL SOLEMNE": (Escudos en piedra, mármol, sin gente).
-            - "MODERNISMO ABSTRACTO": (Geometría roja y blanca, diseño suizo).
+            Define la estética según la gravedad del tema:
+            - "ÉPICA CALLEJERA" (Movilización popular).
+            - "INSTITUCIONAL SOLEMNE" (Defensa de la ley/instituciones).
+            - "MODERNISMO ABSTRACTO" (Ideas, futuro, racionalidad).
 
             FORMATO JSON:
-            1. "frase_radical": Slogan político potente.
-            2. "nombre_meme": Concepto de la tesis activado.
-            3. "explicacion_meme": Breve justificación teórica.
-            4. "cita_historica": Cita textual (Prioridad: {autor_elegido}).
+            1. "frase_radical": Slogan de campaña (Corto y duro).
+            2. "nombre_meme": El Concepto de la Tesis que justifica tu postura.
+            3. "explicacion_meme": El desarrollo del argumento político (Aquí demuestras que leíste la tesis).
+            4. "cita_historica": Cita textual real.
             5. "autor_cita": Autor y Año.
-            6. "estilo_visual": "ÉPICA CALLEJERA", "INSTITUCIONAL SOLEMNE" o "MODERNISMO ABSTRACTO".
-            7. "prompt_meme": Descripción de la escena (sin mencionar el estilo).
+            6. "estilo_visual": ELIGE UNO DE LOS 3 ARRIBA.
+            7. "prompt_meme": Descripción de la escena visual.
             """
 
             try:
@@ -232,18 +220,14 @@ if boton:
                     response_format={"type": "json_object"},
                     messages=[
                         {"role": "system", "content": prompt_sistema},
-                        {"role": "user", "content": f"Tema: {tema_usuario}. Autor obligatorio: {autor_elegido}."}
+                        {"role": "user", "content": f"El tema es: {tema_usuario}. Dame línea política dura basada en la tesis."}
                     ],
-                    temperature=0.7 
+                    temperature=0.5 # Bajamos la temperatura para que sea menos "creativo" y más preciso con la data
                 )
                 
                 datos = json.loads(respuesta.choices[0].message.content)
 
                 # OUTPUTS DE TEXTO
-                
-                # Mostramos quién está hablando (Feedback para el usuario)
-                st.caption(f"🎙️ Voz histórica sintonizada: **{autor_elegido}**")
-
                 html_frase = f"""<div class="headline-box"><p>"{datos['frase_radical']}"</p></div>"""
                 st.markdown(html_frase, unsafe_allow_html=True)
 
@@ -311,9 +295,6 @@ if boton:
 
     else:
         st.warning("Por favor ingresá un tema para consultar a la Máquina.")
-
-
-
 
 
 
