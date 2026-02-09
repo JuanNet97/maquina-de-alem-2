@@ -171,57 +171,61 @@ with col2:
     generar_img = st.checkbox("Generar Meme", value=True)
 
 # --- 6. LÓGICA DE PROCESAMIENTO (BALANCE: REDACCIÓN POTENTE + CITAS REALES) ---
+# --- 6. LÓGICA DE PROCESAMIENTO (MODO EXTRACTIVO PURO) ---
 if boton:
     if tema_usuario:
-        with st.spinner("Procesando lógica discursiva..."):
+        with st.spinner("Rastreando fragmentos discursivos en la Tesis..."):
             
-            # --- PROMPT: CREATIVIDAD PARA EL DISCURSO, RIGOR PARA LA CITA ---
+            # --- PROMPT: REDACCIÓN POLÍTICA + EXTRACCIÓN DE EVIDENCIA ---
             prompt_sistema = f"""
-            Eres "La Máquina de Alem". Tu cerebro es la Tesis de Maestría provista.
+            Eres "La Máquina de Alem". Tu cerebro es EXCLUSIVAMENTE la Tesis de Maestría provista.
             
-            BASE DE CONOCIMIENTO:
+            BASE DE DATOS:
             {base_de_conocimiento}
 
             TU MISIÓN PARA EL TEMA: "{tema_usuario}"
 
-            PASO 1: LA INTERPRETACIÓN (Generativo)
-            - Identifica qué "Significante" (Concepto de la Tesis) aplica mejor a este tema.
-            - Redacta una **LÍNEA DISCURSIVA (Recuadro Rojo)**. 
-            - REQUISITO DE REDACCIÓN: Debe ser una sentencia política desarrollada (no un slogan corto). Debe sonar como un dirigente radical doctrinario, aplicando la lógica del Significante seleccionado.
+            PASO 1: LA POSTURA (Recuadro Rojo - Generativo)
+            - Redacta una **LÍNEA DISCURSIVA DESARROLLADA** (No slogan).
+            - Debe ser una sentencia política de 2 o 3 frases que fije la posición del partido sobre el tema, usando la lógica de los conceptos de la tesis.
 
-            PASO 2: LA EVIDENCIA (Extractivo)
-            - Busca en el texto provisto si existe una cita textual o un fragmento de discurso analizado que sirva de anclaje.
-            - 🛑 **SI NO HAY CITA TEXTUAL EN EL ARCHIVO:** Devuelve el valor "null".
-            - NO INVENTES CITAS. Si no está en el texto, es preferible el silencio.
+            PASO 2: EL CONCEPTO (Recuadro Blanco - Analítico)
+            - Identifica el "Significante" (Concepto de la Tesis) que justifica esa postura.
+            - Explica la conexión teórica.
+
+            PASO 3: LA EVIDENCIA (Recuadro Gris - Extractivo)
+            - Busca en el texto provisto un **fragmento textual de discurso** que haya sido citado o analizado en la tesis.
+            - DEBE SER LITERAL. Copia y pega lo que encuentres en el archivo entre comillas.
+            - Si el análisis menciona: "Como dijo Alem sobre la intransigencia...", EXTRAE lo que dijo Alem.
+            - Si NO encuentras ninguna cita textual sobre este tema específico, devuelve "null". NO INVENTES.
 
             FORMATO JSON:
             {{
-                "frase_radical": "Texto desarrollado y potente de la postura política...",
-                "nombre_meme": "Nombre del Significante (ej: La Ética)",
-                "explicacion_meme": "Justificación técnica de por qué aplica este concepto...",
-                "cita_historica": "Texto de la cita O null",
-                "autor_cita": "Autor y año O null",
+                "frase_radical": "Texto desarrollado de la postura política...",
+                "nombre_meme": "Nombre del Significante (ej: La Reparación)",
+                "explicacion_meme": "Justificación teórica...",
+                "cita_historica": "EL TEXTO LITERAL ENCONTRADO EN LA TESIS O null",
+                "autor_cita": "Autor y año (según la tesis) O null",
                 "estilo_visual": "ÉPICA CALLEJERA, INSTITUCIONAL SOLEMNE o MODERNISMO ABSTRACTO",
                 "prompt_meme": "Descripción visual"
             }}
             """
 
             try:
-                # Temperatura media (0.4): Permite fluidez en la redacción roja, pero mantiene cierto control
+                # Temperatura 0.3: Creatividad baja para no alucinar citas, pero suficiente para redactar la frase roja.
                 respuesta = client.chat.completions.create(
                     model="gpt-4o-mini", 
                     response_format={"type": "json_object"},
                     messages=[
                         {"role": "system", "content": prompt_sistema},
-                        {"role": "user", "content": f"Tema: {tema_usuario}. Redacta con profundidad política."}
+                        {"role": "user", "content": f"Tema: {tema_usuario}. Extrae cita real del análisis."}
                     ],
-                    temperature=0.4 
+                    temperature=0.3 
                 )
                 
                 datos = json.loads(respuesta.choices[0].message.content)
 
                 # --- 1. LÍNEA DISCURSIVA (ROJO) ---
-                # Esta es la "opinión de la máquina" basada en tu tesis.
                 html_frase = f"""
                 <div class="headline-box">
                     <p style="font-size: 1.3rem !important; line-height: 1.4 !important; font-weight: 700 !important; font-family: 'Georgia', serif !important; text-transform: none !important;">
@@ -241,21 +245,21 @@ if boton:
                 """
                 st.markdown(html_tesis, unsafe_allow_html=True)
 
-                # --- 3. CITA HISTÓRICA (GRIS) - SOLO SI ES VERDAD ---
-                # Aquí está la honestidad del proceso: Si es "null", no se muestra nada.
+                # --- 3. CITA HISTÓRICA (GRIS) ---
+                # Lógica: Si encontró algo real en la tesis, lo muestra.
                 cita = datos.get('cita_historica')
                 
-                if cita and cita != "null" and len(cita) > 10:
+                if cita and cita != "null" and len(cita) > 5:
                     html_cita = f"""
                     <div class="quote-box">
                         &laquo;{cita}&raquo;
-                        <div style="text-align:right; font-weight:bold; color:#B71C1C; margin-top:5px;">&mdash; {datos.get('autor_cita', '')}</div>
+                        <div style="text-align:right; font-weight:bold; color:#B71C1C; margin-top:5px;">&mdash; {datos.get('autor_cita', 'Archivo Histórico')}</div>
                     </div>
                     """
                     st.markdown(html_cita, unsafe_allow_html=True)
                 else:
-                    # Si no hay cita, no ponemos nada ni inventamos.
-                    pass 
+                    # Si no hay cita textual en el análisis para este tema, avisa honestamente en lugar de mentir.
+                    st.caption("📝 *No se detectó un fragmento textual directo en el análisis de la Tesis para este concepto específico.*")
 
                 # --- GENERACIÓN DE IMAGEN ---
                 if generar_img:
@@ -302,5 +306,5 @@ if boton:
                 st.error(f"Error de sistema: {e}")
 
     else:
-        st.warning("Por favor ingresá un tema para consultar a la Máquina.")
+        st.warning("
 
