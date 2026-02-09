@@ -170,64 +170,69 @@ with col1:
 with col2:
     generar_img = st.checkbox("Generar Meme", value=True)
 
-# --- 5. LÓGICA DE PROCESAMIENTO ---
+# --- 6. LÓGICA DE PROCESAMIENTO ---
 if boton:
     if tema_usuario:
-        with st.spinner("Redactando línea discursiva..."):
+        with st.spinner("Procesando análisis de la tesis..."):
             
-            # --- PROMPT CORREGIDO: LÍNEA LARGA Y PROFUNDA ---
+            # --- PROMPT CORREGIDO: USAR LA DATA QUE SÍ ESTÁ ---
             prompt_sistema = f"""
-            Eres "La Máquina de Alem". Tu cerebro es EXCLUSIVAMENTE la Tesis de Maestría y el Archivo Histórico de la UCR.
+            Eres "La Máquina de Alem". Tu cerebro es ESTRICTAMENTE el texto de la Tesis de Maestría provista.
             
-            TEXTO FUENTE:
+            TU BASE DE DATOS:
             {base_de_conocimiento}
 
-            TU MISIÓN:
-            El usuario plantea: "{tema_usuario}".
-
-            INSTRUCCIONES DE GENERACIÓN (CRÍTICAS):
-            1. **FRASE RADICAL (Recuadro Rojo):** ¡PROHIBIDO USAR SLOGANS CORTOS! Debes redactar una **Línea Discursiva Desarrollada**.
-               - Tiene que ser una sentencia política completa (2 o 3 oraciones unidas).
-               - Debe tener densidad ideológica (hablar de principios, no de marketing).
-               - Ejemplo de lo que BUSCO: "La república no se negocia en mesas de dinero, porque la ética de la solidaridad exige que el Estado esté presente donde el mercado abandona."
-               - Ejemplo de lo que ODIO: "UCR: La fuerza del cambio."
+            INSTRUCCIONES DE PROCESAMIENTO:
+            El usuario ingresa: "{tema_usuario}".
             
-            2. **EL SIGNIFICANTE (Tesis):** Detecta qué categoría teórica de la tesis (ej: La Reparación, La Ética, El Régimen, La Intransigencia) aplica al tema.
+            1. **LÍNEA DISCURSIVA (Recuadro Rojo):**
+               - NO uses slogans de marketing.
+               - Redacta una **sentencia política completa y desarrollada** (tipo párrafo de discurso).
+               - Construye esta frase emulando la retórica y los conceptos (Significantes) que la Tesis analiza.
+               - Ejemplo de tono buscado: "La democracia no es un pacto de silencio, sino la ética de la responsabilidad frente a un régimen que atropella las instituciones."
+            
+            2. **EL SIGNIFICANTE (Concepto):**
+               - Identifica qué categoría teórica de la Tesis (ej: La Reparación, La Ética, El Régimen) se activa con este tema.
 
-            3. **EXPLICACIÓN TÉCNICA (Justificación):** Explica la conexión lógica: "¿Por qué la frase que escribiste arriba es una manifestación del concepto teórico seleccionado?".
+            3. **JUSTIFICACIÓN TÉCNICA:**
+               - Explica brevemente por qué la frase que generaste arriba responde a ese Significante según el análisis de la tesis.
 
-            4. **CITA:** Cita textual real (Alem, Yrigoyen, Illia, Balbín o Alfonsín).
+            4. **EVIDENCIA TEXTUAL (La Cita):**
+               - Busca en el texto provisto algún **fragmento de discurso** que haya sido analizado.
+               - Extrae ese fragmento TEXTUAL.
+               - Si el análisis cita a Alem, Yrigoyen, Illia o Alfonsín, usa esa parte.
 
             **SELECTOR VISUAL:**
             Elige: "ÉPICA CALLEJERA", "INSTITUCIONAL SOLEMNE" o "MODERNISMO ABSTRACTO".
 
             FORMATO JSON:
-            1. "frase_radical": La línea discursiva larga y desarrollada.
-            2. "nombre_meme": El Concepto/Significante de la Tesis.
-            3. "explicacion_meme": La justificación de la conexión Tesis-Frase.
-            4. "cita_historica": Cita textual real.
-            5. "autor_cita": Autor y Año.
+            1. "frase_radical": La línea discursiva desarrollada.
+            2. "nombre_meme": El Significante de la Tesis.
+            3. "explicacion_meme": Justificación teórica.
+            4. "cita_historica": El fragmento textual extraído de la tesis.
+            5. "autor_cita": Autor y Año del fragmento.
             6. "estilo_visual": ELIGE UNO DE LOS 3 ARRIBA.
-            7. "prompt_meme": Descripción de la escena visual.
+            7. "prompt_meme": Descripción visual de la escena.
             """
 
             try:
-                # MODELO GPT-4o-MINI
+                # Usamos temperatura 0.4 para que sea creativo al redactar la línea política
+                # pero estricto al buscar la información en la tesis.
                 respuesta = client.chat.completions.create(
                     model="gpt-4o-mini", 
                     response_format={"type": "json_object"},
                     messages=[
                         {"role": "system", "content": prompt_sistema},
-                        {"role": "user", "content": f"Tema: {tema_usuario}. QUIERO UNA LÍNEA DISCURSIVA LARGA Y FUNDAMENTADA."}
+                        {"role": "user", "content": f"Tema: {tema_usuario}. Genera línea política basada en el análisis."}
                     ],
-                    temperature=0.5 
+                    temperature=0.4 
                 )
                 
                 datos = json.loads(respuesta.choices[0].message.content)
 
                 # OUTPUTS DE TEXTO
                 
-                # --- AJUSTE VISUAL: Letra más chica para texto más largo ---
+                # CSS Inline para asegurar que la frase larga se lea bien
                 html_frase = f"""
                 <div class="headline-box">
                     <p style="font-size: 1.3rem !important; line-height: 1.4 !important; font-weight: 700 !important; font-family: 'Georgia', serif !important; text-transform: none !important;">
@@ -261,28 +266,15 @@ if boton:
                     with st.spinner(f"Renderizando estética: {datos.get('estilo_visual', 'ÉPICA CALLEJERA')}..."):
                         
                         ESTILOS_UCR = {
-                            "ÉPICA CALLEJERA": """
-                                Style: Vintage political lithography poster (Argentina 1983), grainy paper texture. 
-                                Symbols: Massive crowd wearing white berets (boinas blancas), waving red and white UCR flags. 
-                                Vibe: Emotional, democratic mobilization, dusty and historical.
-                                """,
-                            "INSTITUCIONAL SOLEMNE": """
-                                Style: Brutalist or Neoclassical architecture, imposing stone facade of a Congress building. 
-                                Symbols: The UCR shield emblem (hammer and quill) subtly engraved in marble or bronze on the wall. No crowds. 
-                                Vibe: Serious, heavy, corruption-fighting, unshakeable justice.
-                                """,
-                            "MODERNISMO ABSTRACTO": """
-                                Style: Contemporary Swiss design poster, minimalist typography, clean lines. 
-                                Symbols: Abstract geometric deconstruction of the UCR shield. Use of negative space. 
-                                Colors: Strict Red (#D32F2F) and White palette. Text 'LISTA 3' integrated artistically. 
-                                Vibe: Futuristic, intellectual, clean.
-                                """
+                            "ÉPICA CALLEJERA": "Vintage political lithography poster (Argentina 1983), grainy paper texture. Massive crowd, white berets (boinas blancas), waving red and white UCR flags. Emotional, democratic mobilization.",
+                            "INSTITUCIONAL SOLEMNE": "Brutalist or Neoclassical architecture, imposing stone facade of a Congress building. The UCR shield emblem (hammer and quill) subtly engraved in marble. Serious, heavy, corruption-fighting vibe.",
+                            "MODERNISMO ABSTRACTO": "Contemporary Swiss design poster, minimalist typography, clean lines. Abstract geometric deconstruction of the UCR shield. Negative space. Strict Red (#D32F2F) and White palette."
                         }
                         
                         estilo_elegido = ESTILOS_UCR.get(datos.get('estilo_visual'), ESTILOS_UCR["ÉPICA CALLEJERA"])
                         
-                        # Usamos la frase larga para el contexto pero pedimos que NO la ponga toda en la imagen si es muy larga
-                        prompt_final_imagen = f"{estilo_elegido}. Specific Scene: {datos['prompt_meme']}. Text overlay in Spanish: '{datos['nombre_meme']}'"
+                        # Usamos 'nombre_meme' (el concepto) para el texto de la imagen, que es más corto
+                        prompt_final_imagen = f"{estilo_elegido}. Specific Scene: {datos['prompt_meme']}. Text overlay: '{datos['nombre_meme']}'"
                         
                         try:
                             img_res = client.images.generate(
