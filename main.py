@@ -174,42 +174,44 @@ with col2:
 if boton:
     if tema_usuario:
         with st.spinner("Rastreando fragmentos discursivos en la Tesis..."):
-            
-            # --- PROMPT: REDACCIÓN POLÍTICA + EXTRACCIÓN DE EVIDENCIA ---
+
+        # --- PROMPT: EXTRACCIÓN REAL (Cero inventos, solo lo que está en la Tesis) ---
             prompt_sistema = f"""
-            Eres "La Máquina de Alem". Tu cerebro es EXCLUSIVAMENTE la Tesis de Maestría provista.
+            Eres el sistema experto "La Máquina de Alem". Tu conocimiento es EXCLUSIVAMENTE la Tesis provista.
             
-            BASE DE DATOS:
+            TEXTO FUENTE (Tu única verdad):
             {base_de_conocimiento}
 
             TU MISIÓN PARA EL TEMA: "{tema_usuario}"
 
-            PASO 1: LA POSTURA (Recuadro Rojo - Generativo)
-            - Redacta una **LÍNEA DISCURSIVA DESARROLLADA** (No slogan).
-            - Debe ser una sentencia política de 2 o 3 frases que fije la posición del partido sobre el tema, usando la lógica de los conceptos de la tesis.
-            - Tono: Solemne, principista, histórico.
+            INSTRUCCIONES DE CLASIFICACIÓN Y REDACCIÓN:
+            
+            1. **IDENTIFICACIÓN DEL SIGNIFICANTE (El Concepto):**
+               - Escanea el TEXTO FUENTE e identifica qué categorías teóricas o "Significantes" utiliza el autor para analizar el discurso.
+               - Selecciona el que mejor aplique al tema del usuario.
+               - ⚠️ **CRÍTICO:** Usa EXACTAMENTE el nombre del concepto tal como aparece en la tesis. No inventes categorías nuevas ni uses terminología genérica. Si la tesis habla de "La Causa", usa "La Causa".
+            
+            2. **LÍNEA DISCURSIVA (Recuadro Rojo):**
+               - Redacta una sentencia política desarrollada (2 o 3 oraciones, no slogans).
+               - Debes emular la retórica del Significante seleccionado.
 
-            PASO 2: EL CONCEPTO (Recuadro Blanco - Analítico)
-            - Identifica el "Significante" (Concepto de la Tesis) que justifica esa postura.
-            - Explica la conexión teórica.
-
-            PASO 3: LA EVIDENCIA (Recuadro Gris - Extractivo)
-            - Busca en el texto provisto un **fragmento textual de discurso** que haya sido citado o analizado en la tesis.
-            - DEBE SER LITERAL. Copia y pega lo que encuentres en el archivo entre comillas.
-            - Si el análisis menciona: "Como dijo Alem sobre la intransigencia...", EXTRAE lo que dijo Alem.
-            - Si NO encuentras ninguna cita textual sobre este tema específico, devuelve "null". NO INVENTES.
+            3. **EVIDENCIA TEXTUAL (Recuadro Gris):**
+               - Busca un fragmento LITERAL en el texto fuente que respalde este concepto.
+               - Si no hay una cita textual exacta en el archivo, devuelve el valor "null" (sin comillas).
+               - **NO INVENTES CITAS.**
 
             FORMATO JSON:
             {{
                 "frase_radical": "Texto desarrollado de la postura política...",
-                "nombre_meme": "Nombre del Significante (ej: La Reparación)",
-                "explicacion_meme": "Justificación teórica...",
-                "cita_historica": "EL TEXTO LITERAL ENCONTRADO EN LA TESIS O null",
-                "autor_cita": "Autor y año (según la tesis) O null",
+                "nombre_meme": "NOMBRE EXACTO DEL SIGNIFICANTE (Extraído de la Tesis)",
+                "explicacion_meme": "Justificación de por qué este tema activa ese significante...",
+                "cita_historica": "Texto literal O null",
+                "autor_cita": "Autor y año O null",
                 "estilo_visual": "ÉPICA CALLEJERA, INSTITUCIONAL SOLEMNE o MODERNISMO ABSTRACTO",
                 "prompt_meme": "Descripción visual"
             }}
             """
+
 
             try:
                 # Temperatura 0.3: Creatividad baja para no alucinar citas, pero suficiente para redactar la frase roja.
@@ -307,5 +309,6 @@ if boton:
 
     else:
         st.warning("Por favor ingresá un tema para consultar a la Máquina.")
+
 
 
