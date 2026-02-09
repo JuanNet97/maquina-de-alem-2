@@ -170,69 +170,58 @@ with col1:
 with col2:
     generar_img = st.checkbox("Generar Meme", value=True)
 
-# --- 6. LÓGICA DE PROCESAMIENTO ---
+# --- 6. LÓGICA DE PROCESAMIENTO (BALANCE: REDACCIÓN POTENTE + CITAS REALES) ---
 if boton:
     if tema_usuario:
-        with st.spinner("Procesando análisis de la tesis..."):
+        with st.spinner("Procesando lógica discursiva..."):
             
-            # --- PROMPT CORREGIDO: USAR LA DATA QUE SÍ ESTÁ ---
+            # --- PROMPT: CREATIVIDAD PARA EL DISCURSO, RIGOR PARA LA CITA ---
             prompt_sistema = f"""
-            Eres "La Máquina de Alem". Tu cerebro es ESTRICTAMENTE el texto de la Tesis de Maestría provista.
+            Eres "La Máquina de Alem". Tu cerebro es la Tesis de Maestría provista.
             
-            TU BASE DE DATOS:
+            BASE DE CONOCIMIENTO:
             {base_de_conocimiento}
 
-            INSTRUCCIONES DE PROCESAMIENTO:
-            El usuario ingresa: "{tema_usuario}".
-            
-            1. **LÍNEA DISCURSIVA (Recuadro Rojo):**
-               - NO uses slogans de marketing.
-               - Redacta una **sentencia política completa y desarrollada** (tipo párrafo de discurso).
-               - Construye esta frase emulando la retórica y los conceptos (Significantes) que la Tesis analiza.
-               - Ejemplo de tono buscado: "La democracia no es un pacto de silencio, sino la ética de la responsabilidad frente a un régimen que atropella las instituciones."
-            
-            2. **EL SIGNIFICANTE (Concepto):**
-               - Identifica qué categoría teórica de la Tesis (ej: La Reparación, La Ética, El Régimen) se activa con este tema.
+            TU MISIÓN PARA EL TEMA: "{tema_usuario}"
 
-            3. **JUSTIFICACIÓN TÉCNICA:**
-               - Explica brevemente por qué la frase que generaste arriba responde a ese Significante según el análisis de la tesis.
+            PASO 1: LA INTERPRETACIÓN (Generativo)
+            - Identifica qué "Significante" (Concepto de la Tesis) aplica mejor a este tema.
+            - Redacta una **LÍNEA DISCURSIVA (Recuadro Rojo)**. 
+            - REQUISITO DE REDACCIÓN: Debe ser una sentencia política desarrollada (no un slogan corto). Debe sonar como un dirigente radical doctrinario, aplicando la lógica del Significante seleccionado.
 
-            4. **EVIDENCIA TEXTUAL (La Cita):**
-               - Busca en el texto provisto algún **fragmento de discurso** que haya sido analizado.
-               - Extrae ese fragmento TEXTUAL.
-               - Si el análisis cita a Alem, Yrigoyen, Illia o Alfonsín, usa esa parte.
-
-            **SELECTOR VISUAL:**
-            Elige: "ÉPICA CALLEJERA", "INSTITUCIONAL SOLEMNE" o "MODERNISMO ABSTRACTO".
+            PASO 2: LA EVIDENCIA (Extractivo)
+            - Busca en el texto provisto si existe una cita textual o un fragmento de discurso analizado que sirva de anclaje.
+            - 🛑 **SI NO HAY CITA TEXTUAL EN EL ARCHIVO:** Devuelve el valor "null".
+            - NO INVENTES CITAS. Si no está en el texto, es preferible el silencio.
 
             FORMATO JSON:
-            1. "frase_radical": La línea discursiva desarrollada.
-            2. "nombre_meme": El Significante de la Tesis.
-            3. "explicacion_meme": Justificación teórica.
-            4. "cita_historica": El fragmento textual extraído de la tesis.
-            5. "autor_cita": Autor y Año del fragmento.
-            6. "estilo_visual": ELIGE UNO DE LOS 3 ARRIBA.
-            7. "prompt_meme": Descripción visual de la escena.
+            {{
+                "frase_radical": "Texto desarrollado y potente de la postura política...",
+                "nombre_meme": "Nombre del Significante (ej: La Ética)",
+                "explicacion_meme": "Justificación técnica de por qué aplica este concepto...",
+                "cita_historica": "Texto de la cita O null",
+                "autor_cita": "Autor y año O null",
+                "estilo_visual": "ÉPICA CALLEJERA, INSTITUCIONAL SOLEMNE o MODERNISMO ABSTRACTO",
+                "prompt_meme": "Descripción visual"
+            }}
             """
 
             try:
-                # Usamos temperatura 0.4 para que sea creativo al redactar la línea política
-                # pero estricto al buscar la información en la tesis.
+                # Temperatura media (0.4): Permite fluidez en la redacción roja, pero mantiene cierto control
                 respuesta = client.chat.completions.create(
                     model="gpt-4o-mini", 
                     response_format={"type": "json_object"},
                     messages=[
                         {"role": "system", "content": prompt_sistema},
-                        {"role": "user", "content": f"Tema: {tema_usuario}. Genera línea política basada en el análisis."}
+                        {"role": "user", "content": f"Tema: {tema_usuario}. Redacta con profundidad política."}
                     ],
                     temperature=0.4 
                 )
                 
                 datos = json.loads(respuesta.choices[0].message.content)
 
-                # OUTPUTS DE TEXTO
-                
-                # CSS Inline para asegurar que la frase larga se lea bien
+                # --- 1. LÍNEA DISCURSIVA (ROJO) ---
+                # Esta es la "opinión de la máquina" basada en tu tesis.
                 html_frase = f"""
                 <div class="headline-box">
                     <p style="font-size: 1.3rem !important; line-height: 1.4 !important; font-weight: 700 !important; font-family: 'Georgia', serif !important; text-transform: none !important;">
@@ -242,6 +231,7 @@ if boton:
                 """
                 st.markdown(html_frase, unsafe_allow_html=True)
 
+                # --- 2. EXPLICACIÓN TEÓRICA (BLANCO) ---
                 html_tesis = f"""
                 <div class="thesis-box">
                     <span style="font-size:0.8rem; font-weight:bold; color:#9E9E9E; display:block;">🧬 SIGNIFICANTE ACTIVADO (TESIS)</span>
@@ -251,13 +241,21 @@ if boton:
                 """
                 st.markdown(html_tesis, unsafe_allow_html=True)
 
-                html_cita = f"""
-                <div class="quote-box">
-                    &laquo;{datos['cita_historica']}&raquo;
-                    <div style="text-align:right; font-weight:bold; color:#B71C1C; margin-top:5px;">&mdash; {datos['autor_cita']}</div>
-                </div>
-                """
-                st.markdown(html_cita, unsafe_allow_html=True)
+                # --- 3. CITA HISTÓRICA (GRIS) - SOLO SI ES VERDAD ---
+                # Aquí está la honestidad del proceso: Si es "null", no se muestra nada.
+                cita = datos.get('cita_historica')
+                
+                if cita and cita != "null" and len(cita) > 10:
+                    html_cita = f"""
+                    <div class="quote-box">
+                        &laquo;{cita}&raquo;
+                        <div style="text-align:right; font-weight:bold; color:#B71C1C; margin-top:5px;">&mdash; {datos.get('autor_cita', '')}</div>
+                    </div>
+                    """
+                    st.markdown(html_cita, unsafe_allow_html=True)
+                else:
+                    # Si no hay cita, no ponemos nada ni inventamos.
+                    pass 
 
                 # --- GENERACIÓN DE IMAGEN ---
                 if generar_img:
@@ -266,14 +264,25 @@ if boton:
                     with st.spinner(f"Renderizando estética: {datos.get('estilo_visual', 'ÉPICA CALLEJERA')}..."):
                         
                         ESTILOS_UCR = {
-                            "ÉPICA CALLEJERA": "Vintage political lithography poster (Argentina 1983), grainy paper texture. Massive crowd, white berets (boinas blancas), waving red and white UCR flags. Emotional, democratic mobilization.",
-                            "INSTITUCIONAL SOLEMNE": "Brutalist or Neoclassical architecture, imposing stone facade of a Congress building. The UCR shield emblem (hammer and quill) subtly engraved in marble. Serious, heavy, corruption-fighting vibe.",
-                            "MODERNISMO ABSTRACTO": "Contemporary Swiss design poster, minimalist typography, clean lines. Abstract geometric deconstruction of the UCR shield. Negative space. Strict Red (#D32F2F) and White palette."
+                            "ÉPICA CALLEJERA": """
+                                Style: Vintage political lithography poster (Argentina 1983), grainy paper texture. 
+                                Symbols: Massive crowd wearing white berets (boinas blancas), waving red and white UCR flags. 
+                                Vibe: Emotional, democratic mobilization, dusty and historical.
+                                """,
+                            "INSTITUCIONAL SOLEMNE": """
+                                Style: Brutalist or Neoclassical architecture, imposing stone facade of a Congress building. 
+                                Symbols: The UCR shield emblem (hammer and quill) subtly engraved in marble or bronze on the wall. No crowds. 
+                                Vibe: Serious, heavy, corruption-fighting, unshakeable justice.
+                                """,
+                            "MODERNISMO ABSTRACTO": """
+                                Style: Contemporary Swiss design poster, minimalist typography, clean lines. 
+                                Symbols: Abstract geometric deconstruction of the UCR shield. Use of negative space. 
+                                Colors: Strict Red (#D32F2F) and White palette. Text 'LISTA 3' integrated artistically. 
+                                Vibe: Futuristic, intellectual, clean.
+                                """
                         }
                         
                         estilo_elegido = ESTILOS_UCR.get(datos.get('estilo_visual'), ESTILOS_UCR["ÉPICA CALLEJERA"])
-                        
-                        # Usamos 'nombre_meme' (el concepto) para el texto de la imagen, que es más corto
                         prompt_final_imagen = f"{estilo_elegido}. Specific Scene: {datos['prompt_meme']}. Text overlay: '{datos['nombre_meme']}'"
                         
                         try:
@@ -294,6 +303,4 @@ if boton:
 
     else:
         st.warning("Por favor ingresá un tema para consultar a la Máquina.")
-
-
 
