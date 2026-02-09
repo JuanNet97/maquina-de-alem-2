@@ -1,6 +1,7 @@
 import streamlit as st
 from openai import OpenAI
 import json
+import random
 
 # --- 1. CONFIGURACIÓN VISUAL (ESTÉTICA COMPLETA) ---
 st.set_page_config(page_title="La Máquina de Alem", page_icon="🇦🇷", layout="centered")
@@ -174,35 +175,54 @@ with col2:
 # --- 6. LÓGICA DE PROCESAMIENTO ---
 if boton:
     if tema_usuario:
-        with st.spinner("Procesando Archivo Histórico completo..."):
+        with st.spinner("Convocando a los espíritus del Comité Nacional..."):
             
-            # --- NUEVO PROMPT CON SELECTOR DE ESTILOS ---
+            # --- LA RULETA HISTÓRICA (NUEVO) ---
+            # Forzamos a que elija uno de estos autores para romper el sesgo de Alfonsín.
+            lista_proceres = [
+                "Leandro N. Alem (El Fundador)",
+                "Hipólito Yrigoyen (El Reparador)",
+                "Marcelo T. de Alvear (El Institucionalista)",
+                "Moisés Lebensohn (La Intransigencia)",
+                "Crisólogo Larralde (El autor del 14 bis)",
+                "Arturo Illia (La Honestidad)",
+                "Ricardo Balbín (La Unión Nacional)",
+                "Raúl Alfonsín (La Democracia)"
+            ]
+            
+            # Elegimos uno al azar
+            autor_elegido = random.choice(lista_proceres)
+            
+            # --- PROMPT MAESTRO (INSTRUCCIÓN DE BÚSQUEDA) ---
             prompt_sistema = f"""
-            Eres "La Máquina de Alem", la conciencia histórica de la UCR.
+            Eres "La Máquina de Alem".
             
-            CEREBRO (Base de Conocimiento):
+            CEREBRO (Tesis y Discursos):
             {base_de_conocimiento}
 
-            MISIÓN: Responde al tema del usuario basándote en la Tesis y los Discursos.
+            TU MISIÓN:
+            El usuario pregunta: "{tema_usuario}".
+            
+            🔴 INSTRUCCIÓN DE PRIORIDAD MÁXIMA:
+            Debes responder canalizando la voz y el pensamiento de: **{autor_elegido}**.
+            Busca en el texto provisto citas o referencias conceptuales de este autor específico.
+            
+            SI EL AUTOR ES YRIGOYEN O ALVEAR: Esfuérzate por encontrar sus palabras en la tesis. Si no hay una cita exacta sobre el tema, usa una frase suya sobre un tema similar (ética, república, economía) y adáptala conceptualmente.
 
-            REGLAS:
-            1. VARIEDAD HISTÓRICA: Prioriza citas de Alem, Yrigoyen, Larralde, Illia sobre Alfonsín si es posible.
-            2. EVIDENCIA: Extrae frase y AÑO exacto.
-
-            **SELECTOR VISUAL (IMPORTANTE):**
-            Debes elegir UNO de estos 3 estilos visuales para la imagen, según el tono del tema:
-            - "ÉPICA CALLEJERA": Para temas de movilización, democracia, lucha popular. (Estilo: Vintage 1983, boinas blancas, multitud).
-            - "INSTITUCIONAL SOLEMNE": Para temas de corrupción, justicia, leyes graves. (Estilo: Arquitectura brutalista, mármol, escudo UCR en piedra, serio).
-            - "MODERNISMO ABSTRACTO": Para temas de futuro, educación, economía, ideas. (Estilo: Diseño suizo minimalista, geométrico rojo/blanco, conceptual).
+            **SELECTOR VISUAL:**
+            Elige el estilo visual adecuado:
+            - "ÉPICA CALLEJERA": (Multitudes, boinas blancas).
+            - "INSTITUCIONAL SOLEMNE": (Escudos en piedra, mármol, sin gente).
+            - "MODERNISMO ABSTRACTO": (Geometría roja y blanca, diseño suizo).
 
             FORMATO JSON:
-            1. "frase_radical": Slogan político.
-            2. "nombre_meme": Concepto de la tesis.
-            3. "explicacion_meme": Justificación.
-            4. "cita_historica": Cita textual.
+            1. "frase_radical": Slogan político potente.
+            2. "nombre_meme": Concepto de la tesis activado.
+            3. "explicacion_meme": Breve justificación teórica.
+            4. "cita_historica": Cita textual (Prioridad: {autor_elegido}).
             5. "autor_cita": Autor y Año.
-            6. "estilo_visual": ELIGE UNO: "ÉPICA CALLEJERA", "INSTITUCIONAL SOLEMNE" o "MODERNISMO ABSTRACTO".
-            7. "prompt_meme": Descripción visual específica de la escena (sin mencionar el estilo general).
+            6. "estilo_visual": "ÉPICA CALLEJERA", "INSTITUCIONAL SOLEMNE" o "MODERNISMO ABSTRACTO".
+            7. "prompt_meme": Descripción de la escena (sin mencionar el estilo).
             """
 
             try:
@@ -212,7 +232,7 @@ if boton:
                     response_format={"type": "json_object"},
                     messages=[
                         {"role": "system", "content": prompt_sistema},
-                        {"role": "user", "content": f"Tema: {tema_usuario}."}
+                        {"role": "user", "content": f"Tema: {tema_usuario}. Autor obligatorio: {autor_elegido}."}
                     ],
                     temperature=0.7 
                 )
@@ -220,6 +240,10 @@ if boton:
                 datos = json.loads(respuesta.choices[0].message.content)
 
                 # OUTPUTS DE TEXTO
+                
+                # Mostramos quién está hablando (Feedback para el usuario)
+                st.caption(f"🎙️ Voz histórica sintonizada: **{autor_elegido}**")
+
                 html_frase = f"""<div class="headline-box"><p>"{datos['frase_radical']}"</p></div>"""
                 st.markdown(html_frase, unsafe_allow_html=True)
 
@@ -240,14 +264,13 @@ if boton:
                 """
                 st.markdown(html_cita, unsafe_allow_html=True)
 
-                # --- GENERACIÓN DE IMAGEN COMPLEJA ---
-                # --- GENERACIÓN DE IMAGEN CON SIMBOLOGÍA ADAPTATIVA ---
+                # --- GENERACIÓN DE IMAGEN ---
                 if generar_img:
                     st.write("---")
                     st.markdown("**📢 Propaganda Generada por la Máquina:**")
                     with st.spinner(f"Renderizando estética: {datos.get('estilo_visual', 'ÉPICA CALLEJERA')}..."):
                         
-                        # DICCIONARIO DE ESTILOS + SIMBOLOGÍA ESPECÍFICA
+                        # DICCIONARIO DE ESTILOS
                         ESTILOS_UCR = {
                             "ÉPICA CALLEJERA": """
                                 Style: Vintage political lithography poster (Argentina 1983), grainy paper texture. 
@@ -267,10 +290,7 @@ if boton:
                                 """
                         }
                         
-                        # Seleccionamos el kit correspondiente
                         estilo_elegido = ESTILOS_UCR.get(datos.get('estilo_visual'), ESTILOS_UCR["ÉPICA CALLEJERA"])
-                        
-                        # Prompt Final: Estilo + Descripción de la escena (del cerebro) + Texto
                         prompt_final_imagen = f"{estilo_elegido}. Specific Scene: {datos['prompt_meme']}. Main Text overlay in Spanish: '{datos['frase_radical']}'"
                         
                         try:
