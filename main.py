@@ -171,34 +171,40 @@ with col2:
     generar_img = st.checkbox("Generar Meme", value=True)
 
 # --- 5. LÓGICA DE PROCESAMIENTO ---
-# --- 6. LÓGICA DE PROCESAMIENTO ---
 if boton:
     if tema_usuario:
-        with st.spinner("Analizando doctrina histórica..."):
+        with st.spinner("Redactando línea discursiva..."):
             
-            # --- PROMPT CORREGIDO: LÍNEA DESARROLLADA + CONEXIÓN TEÓRICA ---
+            # --- PROMPT CORREGIDO: LÍNEA LARGA Y PROFUNDA ---
             prompt_sistema = f"""
-            Eres el sistema experto "La Máquina de Alem". Tu cerebro es EXCLUSIVAMENTE esta Tesis de Maestría y el Archivo Histórico de la UCR.
+            Eres "La Máquina de Alem". Tu cerebro es EXCLUSIVAMENTE la Tesis de Maestría y el Archivo Histórico de la UCR.
             
             TEXTO FUENTE:
             {base_de_conocimiento}
 
             TU MISIÓN:
-            El usuario plantea el tema: "{tema_usuario}".
+            El usuario plantea: "{tema_usuario}".
 
-            INSTRUCCIONES DE GENERACIÓN (ESTRICTAS):
-            1. **FRASE RADICAL (Recuadro Rojo):** NO escribas un slogan corto de marketing. Escribe una **sentencia política desarrollada y contundente** (1 o 2 oraciones completas) que fije la postura del partido sobre el tema. Debe tener peso retórico y profundidad ideológica.
-            2. **EL SIGNIFICANTE (Tesis):** Identifica qué concepto de la tesis (ej: La Reparación, La Ética, El Régimen) se activa con este tema.
-            3. **EXPLICACIÓN (Justificación):** Explica técnicamente **por qué** la frase que escribiste arriba se relaciona con ese Significante de la Tesis. (Ej: "Esta frase invoca la 'Reparación' porque el tema implica reconstruir un tejido social roto...").
-            4. **CITA:** Busca una cita textual real (Alem, Yrigoyen, Illia o Alfonsín) que respalde el argumento.
+            INSTRUCCIONES DE GENERACIÓN (CRÍTICAS):
+            1. **FRASE RADICAL (Recuadro Rojo):** ¡PROHIBIDO USAR SLOGANS CORTOS! Debes redactar una **Línea Discursiva Desarrollada**.
+               - Tiene que ser una sentencia política completa (2 o 3 oraciones unidas).
+               - Debe tener densidad ideológica (hablar de principios, no de marketing).
+               - Ejemplo de lo que BUSCO: "La república no se negocia en mesas de dinero, porque la ética de la solidaridad exige que el Estado esté presente donde el mercado abandona."
+               - Ejemplo de lo que ODIO: "UCR: La fuerza del cambio."
+            
+            2. **EL SIGNIFICANTE (Tesis):** Detecta qué categoría teórica de la tesis (ej: La Reparación, La Ética, El Régimen, La Intransigencia) aplica al tema.
+
+            3. **EXPLICACIÓN TÉCNICA (Justificación):** Explica la conexión lógica: "¿Por qué la frase que escribiste arriba es una manifestación del concepto teórico seleccionado?".
+
+            4. **CITA:** Cita textual real (Alem, Yrigoyen, Illia, Balbín o Alfonsín).
 
             **SELECTOR VISUAL:**
-            Elige el estilo visual: "ÉPICA CALLEJERA", "INSTITUCIONAL SOLEMNE" o "MODERNISMO ABSTRACTO".
+            Elige: "ÉPICA CALLEJERA", "INSTITUCIONAL SOLEMNE" o "MODERNISMO ABSTRACTO".
 
             FORMATO JSON:
-            1. "frase_radical": Sentencia política desarrollada (La línea discursiva principal).
+            1. "frase_radical": La línea discursiva larga y desarrollada.
             2. "nombre_meme": El Concepto/Significante de la Tesis.
-            3. "explicacion_meme": La justificación teórica de la conexión entre la frase y el concepto.
+            3. "explicacion_meme": La justificación de la conexión Tesis-Frase.
             4. "cita_historica": Cita textual real.
             5. "autor_cita": Autor y Año.
             6. "estilo_visual": ELIGE UNO DE LOS 3 ARRIBA.
@@ -212,7 +218,7 @@ if boton:
                     response_format={"type": "json_object"},
                     messages=[
                         {"role": "system", "content": prompt_sistema},
-                        {"role": "user", "content": f"Tema: {tema_usuario}. Dame una línea política desarrollada, no un slogan."}
+                        {"role": "user", "content": f"Tema: {tema_usuario}. QUIERO UNA LÍNEA DISCURSIVA LARGA Y FUNDAMENTADA."}
                     ],
                     temperature=0.5 
                 )
@@ -220,10 +226,13 @@ if boton:
                 datos = json.loads(respuesta.choices[0].message.content)
 
                 # OUTPUTS DE TEXTO
-                # Ajustamos un poco el CSS inline aquí para que la letra no sea TAN gigante si la frase es larga
+                
+                # --- AJUSTE VISUAL: Letra más chica para texto más largo ---
                 html_frase = f"""
                 <div class="headline-box">
-                    <p style="font-size: 1.4rem !important; line-height: 1.3 !important;">"{datos['frase_radical']}"</p>
+                    <p style="font-size: 1.3rem !important; line-height: 1.4 !important; font-weight: 700 !important; font-family: 'Georgia', serif !important; text-transform: none !important;">
+                        "{datos['frase_radical']}"
+                    </p>
                 </div>
                 """
                 st.markdown(html_frase, unsafe_allow_html=True)
@@ -271,7 +280,9 @@ if boton:
                         }
                         
                         estilo_elegido = ESTILOS_UCR.get(datos.get('estilo_visual'), ESTILOS_UCR["ÉPICA CALLEJERA"])
-                        prompt_final_imagen = f"{estilo_elegido}. Specific Scene: {datos['prompt_meme']}. Main Text overlay in Spanish: '{datos['frase_radical']}'"
+                        
+                        # Usamos la frase larga para el contexto pero pedimos que NO la ponga toda en la imagen si es muy larga
+                        prompt_final_imagen = f"{estilo_elegido}. Specific Scene: {datos['prompt_meme']}. Text overlay in Spanish: '{datos['nombre_meme']}'"
                         
                         try:
                             img_res = client.images.generate(
@@ -291,8 +302,6 @@ if boton:
 
     else:
         st.warning("Por favor ingresá un tema para consultar a la Máquina.")
-
-
 
 
 
