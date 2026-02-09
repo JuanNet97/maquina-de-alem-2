@@ -171,63 +171,82 @@ with col2:
     generar_img = st.checkbox("Generar Meme", value=True)
 
 # --- 6. LÓGICA DE PROCESAMIENTO (MODO EXTRACTIVO PURO) ---
+# --- 6. LÓGICA DE PROCESAMIENTO (MODO TAXONOMÍA CIENTÍFICA) ---
 if boton:
     if tema_usuario:
-        with st.spinner("Rastreando fragmentos discursivos en la Tesis..."):
-
-        # --- PROMPT: EXTRACCIÓN REAL (Cero inventos, solo lo que está en la Tesis) ---
-            prompt_sistema = f"""
-            Eres el sistema experto "La Máquina de Alem". Tu conocimiento es EXCLUSIVAMENTE la Tesis provista.
+        with st.spinner("Procesando matriz de significantes..."):
             
-            TEXTO FUENTE (Tu única verdad):
+            # 1. Definimos TU LISTA EXACTA como la "Constitución" del modelo
+            lista_significantes = """
+            1. "Ética Pública": Compromiso con la transparencia, honestidad y rechazo a la corrupción. (Ref: Alem, Illia, Alfonsín, De la Rúa, Manes).
+            2. "Democracia": Defensa activa de las instituciones, participación popular y libertades civiles. (Ref: Alem, Yrigoyen, Illia, Alfonsín, Manes).
+            3. "Juventud": Interpelación a la juventud como sujeto clave de transformación. (Ref: Alem, Alfonsín, Manes).
+            4. "Reparación Nacional": Restaurar un orden social justo y democrático frente a injusticias. (Ref: Yrigoyen, Illia, Alfonsín, Manes).
+            5. "Sacrificio": Compromiso ético y personal extremo por ideales políticos. (Ref: Alem, Yrigoyen, Alfonsín).
+            6. "Unidad Nacional": Cohesión social y política frente a crisis graves. (Ref: Yrigoyen, Alfonsín, De la Rúa, Manes).
+            7. "Justicia Social": Distribución equitativa de recursos y oportunidades. (Ref: Illia, Alfonsín, Manes).
+            8. "Institucionalidad": Respeto a las instituciones, Constitución y legalidad republicana. (Ref: Alvear, Illia, Alfonsín, De la Rúa).
+            9. "Constitucionalismo Ético": Legitimidad basada en la Constitución y valores éticos. (Ref: Illia, Alfonsín, De la Rúa).
+            10. "Cambio / Renovación": Renovación frente a la corrupción, inmovilismo y decadencia. (Ref: Alem, Alfonsín, De la Rúa, Manes).
+            """
+
+            # 2. El Prompt de Clasificación Estricta
+            prompt_sistema = f"""
+            Eres "La Máquina de Alem". Tu objetivo es la DIVULGACIÓN CIENTÍFICA de la Tesis de Maestría provista.
+            
+            TU BASE DE CONOCIMIENTO (Texto Fuente):
             {base_de_conocimiento}
+
+            TUS CATEGORÍAS DE ANÁLISIS (USAR SOLO ESTAS 10):
+            {lista_significantes}
 
             TU MISIÓN PARA EL TEMA: "{tema_usuario}"
 
-            INSTRUCCIONES DE CLASIFICACIÓN Y REDACCIÓN:
-            
-            1. **IDENTIFICACIÓN DEL SIGNIFICANTE (El Concepto):**
-               - Escanea el TEXTO FUENTE e identifica qué categorías teóricas o "Significantes" utiliza el autor para analizar el discurso.
-               - Selecciona el que mejor aplique al tema del usuario.
-               - ⚠️ **CRÍTICO:** Usa EXACTAMENTE el nombre del concepto tal como aparece en la tesis. No inventes categorías nuevas ni uses terminología genérica. Si la tesis habla de "La Causa", usa "La Causa".
-            
-            2. **LÍNEA DISCURSIVA (Recuadro Rojo):**
-               - Redacta una sentencia política desarrollada (2 o 3 oraciones, no slogans).
-               - Debes emular la retórica del Significante seleccionado.
+            PASO 1: CLASIFICACIÓN (El Cerebro)
+            - Analiza el tema del usuario y elige CUÁL de los 10 significantes de la lista de arriba aplica mejor.
+            - ⚠️ PROHIBIDO inventar categorías. Debes usar el nombre exacto (ej: "Justicia Social").
 
-            3. **EVIDENCIA TEXTUAL (Recuadro Gris):**
-               - Busca un fragmento LITERAL en el texto fuente que respalde este concepto.
-               - Si no hay una cita textual exacta en el archivo, devuelve el valor "null" (sin comillas).
-               - **NO INVENTES CITAS.**
+            PASO 2: REDACCIÓN POLÍTICA (Recuadro Rojo)
+            - Redacta una sentencia política desarrollada (no un slogan corto).
+            - Debe aplicar la definición del Significante elegido al tema actual.
+            - Tono: Doctrinario, solemne y radical.
+
+            PASO 3: JUSTIFICACIÓN TEÓRICA (Recuadro Blanco)
+            - Explica POR QUÉ este tema activa ese Significante específico según la definición dada.
+
+            PASO 4: EVIDENCIA (Recuadro Gris)
+            - Busca en el texto de la Tesis una cita textual o fragmento analizado que corresponda a los autores de ese significante (ver lista de Ref).
+            - Si NO hay cita textual exacta en el archivo, devuelve el valor "null".
 
             FORMATO JSON:
             {{
                 "frase_radical": "Texto desarrollado de la postura política...",
-                "nombre_meme": "NOMBRE EXACTO DEL SIGNIFICANTE (Extraído de la Tesis)",
-                "explicacion_meme": "Justificación de por qué este tema activa ese significante...",
-                "cita_historica": "Texto literal O null",
+                "nombre_meme": "NOMBRE EXACTO DEL SIGNIFICANTE (De la lista de 10)",
+                "explicacion_meme": "Justificación teórica...",
+                "cita_historica": "Texto literal encontrado O null",
                 "autor_cita": "Autor y año O null",
                 "estilo_visual": "ÉPICA CALLEJERA, INSTITUCIONAL SOLEMNE o MODERNISMO ABSTRACTO",
                 "prompt_meme": "Descripción visual"
             }}
             """
 
-
             try:
-                # Temperatura 0.3: Creatividad baja para no alucinar citas, pero suficiente para redactar la frase roja.
+                # Temperatura 0.2: Rigor máximo para que respete la lista
                 respuesta = client.chat.completions.create(
                     model="gpt-4o-mini", 
                     response_format={"type": "json_object"},
                     messages=[
                         {"role": "system", "content": prompt_sistema},
-                        {"role": "user", "content": f"Tema: {tema_usuario}. Extrae cita real del análisis."}
+                        {"role": "user", "content": f"Tema: {tema_usuario}. Clasifica usando la lista cerrada."}
                     ],
-                    temperature=0.3 
+                    temperature=0.2 
                 )
                 
                 datos = json.loads(respuesta.choices[0].message.content)
 
-                # --- 1. LÍNEA DISCURSIVA (ROJO) ---
+                # --- OUTPUT VISUAL ---
+
+                # 1. Línea Discursiva (Rojo)
                 html_frase = f"""
                 <div class="headline-box">
                     <p style="font-size: 1.3rem !important; line-height: 1.4 !important; font-weight: 700 !important; font-family: 'Georgia', serif !important; text-transform: none !important;">
@@ -237,7 +256,7 @@ if boton:
                 """
                 st.markdown(html_frase, unsafe_allow_html=True)
 
-                # --- 2. EXPLICACIÓN TEÓRICA (BLANCO) ---
+                # 2. Explicación del Significante (Blanco)
                 html_tesis = f"""
                 <div class="thesis-box">
                     <span style="font-size:0.8rem; font-weight:bold; color:#9E9E9E; display:block;">🧬 SIGNIFICANTE ACTIVADO (TESIS)</span>
@@ -247,21 +266,19 @@ if boton:
                 """
                 st.markdown(html_tesis, unsafe_allow_html=True)
 
-                # --- 3. CITA HISTÓRICA (GRIS) ---
-                # Lógica: Si encontró algo real en la tesis, lo muestra.
+                # 3. Cita Histórica (Solo si es real)
                 cita = datos.get('cita_historica')
-                
-                if cita and cita != "null" and len(cita) > 5:
+                if cita and cita != "null" and len(cita) > 10:
                     html_cita = f"""
                     <div class="quote-box">
                         &laquo;{cita}&raquo;
-                        <div style="text-align:right; font-weight:bold; color:#B71C1C; margin-top:5px;">&mdash; {datos.get('autor_cita', 'Archivo Histórico')}</div>
+                        <div style="text-align:right; font-weight:bold; color:#B71C1C; margin-top:5px;">&mdash; {datos.get('autor_cita', '')}</div>
                     </div>
                     """
                     st.markdown(html_cita, unsafe_allow_html=True)
                 else:
-                    # Si no hay cita textual en el análisis para este tema, avisa honestamente en lugar de mentir.
-                    st.caption("📝 *No se detectó un fragmento textual directo en el análisis de la Tesis para este concepto específico.*")
+                    # Mensaje de transparencia si no hay cita
+                    st.caption("📝 *El archivo de tesis no contiene una cita textual directa para vincular este tema específico.*")
 
                 # --- GENERACIÓN DE IMAGEN ---
                 if generar_img:
@@ -270,45 +287,24 @@ if boton:
                     with st.spinner(f"Renderizando estética: {datos.get('estilo_visual', 'ÉPICA CALLEJERA')}..."):
                         
                         ESTILOS_UCR = {
-                            "ÉPICA CALLEJERA": """
-                                Style: Vintage political lithography poster (Argentina 1983), grainy paper texture. 
-                                Symbols: Massive crowd wearing white berets (boinas blancas), waving red and white UCR flags. 
-                                Vibe: Emotional, democratic mobilization, dusty and historical.
-                                """,
-                            "INSTITUCIONAL SOLEMNE": """
-                                Style: Brutalist or Neoclassical architecture, imposing stone facade of a Congress building. 
-                                Symbols: The UCR shield emblem (hammer and quill) subtly engraved in marble or bronze on the wall. No crowds. 
-                                Vibe: Serious, heavy, corruption-fighting, unshakeable justice.
-                                """,
-                            "MODERNISMO ABSTRACTO": """
-                                Style: Contemporary Swiss design poster, minimalist typography, clean lines. 
-                                Symbols: Abstract geometric deconstruction of the UCR shield. Use of negative space. 
-                                Colors: Strict Red (#D32F2F) and White palette. Text 'LISTA 3' integrated artistically. 
-                                Vibe: Futuristic, intellectual, clean.
-                                """
+                            "ÉPICA CALLEJERA": "Vintage political lithography poster (Argentina 1983), grainy paper texture. Massive crowd, white berets (boinas blancas), waving red and white UCR flags. Emotional.",
+                            "INSTITUCIONAL SOLEMNE": "Brutalist architecture, imposing stone facade of Congress. UCR shield emblem (hammer and quill) engraved in marble. Serious, heavy.",
+                            "MODERNISMO ABSTRACTO": "Contemporary Swiss design poster, minimalist typography. Abstract geometric deconstruction of UCR shield. Strict Red (#D32F2F) and White palette."
                         }
                         
-                        estilo_elegido = ESTILOS_UCR.get(datos.get('estilo_visual'), ESTILOS_UCR["ÉPICA CALLEJERA"])
-                        prompt_final_imagen = f"{estilo_elegido}. Specific Scene: {datos['prompt_meme']}. Text overlay: '{datos['nombre_meme']}'"
+                        estilo = ESTILOS_UCR.get(datos.get('estilo_visual'), ESTILOS_UCR["ÉPICA CALLEJERA"])
+                        prompt_img = f"{estilo}. Scene: {datos['prompt_meme']}. Text: '{datos['nombre_meme']}'"
                         
                         try:
-                            img_res = client.images.generate(
-                                model="dall-e-3",
-                                prompt=prompt_final_imagen,
-                                n=1,
-                                size="1024x1024",
-                                quality="hd",
-                                style="vivid"
-                            )
-                            st.image(img_res.data[0].url, caption=f"Estética: {datos.get('estilo_visual', 'ÉPICA CALLEJERA')}")
+                            img_res = client.images.generate(model="dall-e-3", prompt=prompt_img, n=1, size="1024x1024", quality="hd", style="vivid")
+                            st.image(img_res.data[0].url, caption=f"Estética: {datos.get('estilo_visual')}")
                         except Exception as e:
-                            st.warning(f"No se pudo generar la imagen: {e}")
+                            st.warning(f"Error imagen: {e}")
 
             except Exception as e:
                 st.error(f"Error de sistema: {e}")
 
     else:
         st.warning("Por favor ingresá un tema para consultar a la Máquina.")
-
 
 
