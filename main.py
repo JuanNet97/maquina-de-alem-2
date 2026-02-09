@@ -176,8 +176,7 @@ if boton:
     if tema_usuario:
         with st.spinner("Analizando doctrina histórica..."):
             
-            # --- PROMPT DE ANÁLISIS POLÍTICO (CEREBRO) ---
-            # En lugar de jugar a los dados, le pedimos que piense como el tesista.
+            # --- PROMPT CORREGIDO: LÍNEA DESARROLLADA + CONEXIÓN TEÓRICA ---
             prompt_sistema = f"""
             Eres el sistema experto "La Máquina de Alem". Tu cerebro es EXCLUSIVAMENTE esta Tesis de Maestría y el Archivo Histórico de la UCR.
             
@@ -186,27 +185,20 @@ if boton:
 
             TU MISIÓN:
             El usuario plantea el tema: "{tema_usuario}".
-            
-            No respondas con frases hechas. Construye una **LÍNEA ARGUMENTAL RADICAL** basada en los conceptos de la Tesis.
 
-            PASOS DE RAZONAMIENTO OBLIGATORIOS:
-            1. **Filtro Teórico:** ¿Qué "Significante" de la Tesis explica este conflicto? (Ej: ¿Es un atropello institucional? -> Aplica "La República". ¿Es exclusión social? -> Aplica "La Reparación" o "La Ética").
-            2. **Desarrollo Discursivo:** Redacta el argumento político. ¿Por qué la UCR se opone o apoya esto basándose en su historia? Usa el tono de la "Intransigencia" si es necesario.
-            3. **Evidencia:** Busca la cita histórica que MEJOR encaje con el argumento.
-               - Si Alem o Yrigoyen tienen algo sobre el *principio* (justicia, libertad, honor), úsalos a ellos primero.
-               - Si no, usa a Alfonsín o Illia.
-               - **PROHIBIDO INVENTAR:** Si la cita no existe en el texto, no la pongas.
+            INSTRUCCIONES DE GENERACIÓN (ESTRICTAS):
+            1. **FRASE RADICAL (Recuadro Rojo):** NO escribas un slogan corto de marketing. Escribe una **sentencia política desarrollada y contundente** (1 o 2 oraciones completas) que fije la postura del partido sobre el tema. Debe tener peso retórico y profundidad ideológica.
+            2. **EL SIGNIFICANTE (Tesis):** Identifica qué concepto de la tesis (ej: La Reparación, La Ética, El Régimen) se activa con este tema.
+            3. **EXPLICACIÓN (Justificación):** Explica técnicamente **por qué** la frase que escribiste arriba se relaciona con ese Significante de la Tesis. (Ej: "Esta frase invoca la 'Reparación' porque el tema implica reconstruir un tejido social roto...").
+            4. **CITA:** Busca una cita textual real (Alem, Yrigoyen, Illia o Alfonsín) que respalde el argumento.
 
             **SELECTOR VISUAL:**
-            Define la estética según la gravedad del tema:
-            - "ÉPICA CALLEJERA" (Movilización popular).
-            - "INSTITUCIONAL SOLEMNE" (Defensa de la ley/instituciones).
-            - "MODERNISMO ABSTRACTO" (Ideas, futuro, racionalidad).
+            Elige el estilo visual: "ÉPICA CALLEJERA", "INSTITUCIONAL SOLEMNE" o "MODERNISMO ABSTRACTO".
 
             FORMATO JSON:
-            1. "frase_radical": Slogan de campaña (Corto y duro).
-            2. "nombre_meme": El Concepto de la Tesis que justifica tu postura.
-            3. "explicacion_meme": El desarrollo del argumento político (Aquí demuestras que leíste la tesis).
+            1. "frase_radical": Sentencia política desarrollada (La línea discursiva principal).
+            2. "nombre_meme": El Concepto/Significante de la Tesis.
+            3. "explicacion_meme": La justificación teórica de la conexión entre la frase y el concepto.
             4. "cita_historica": Cita textual real.
             5. "autor_cita": Autor y Año.
             6. "estilo_visual": ELIGE UNO DE LOS 3 ARRIBA.
@@ -220,15 +212,20 @@ if boton:
                     response_format={"type": "json_object"},
                     messages=[
                         {"role": "system", "content": prompt_sistema},
-                        {"role": "user", "content": f"El tema es: {tema_usuario}. Dame línea política dura basada en la tesis."}
+                        {"role": "user", "content": f"Tema: {tema_usuario}. Dame una línea política desarrollada, no un slogan."}
                     ],
-                    temperature=0.5 # Bajamos la temperatura para que sea menos "creativo" y más preciso con la data
+                    temperature=0.5 
                 )
                 
                 datos = json.loads(respuesta.choices[0].message.content)
 
                 # OUTPUTS DE TEXTO
-                html_frase = f"""<div class="headline-box"><p>"{datos['frase_radical']}"</p></div>"""
+                # Ajustamos un poco el CSS inline aquí para que la letra no sea TAN gigante si la frase es larga
+                html_frase = f"""
+                <div class="headline-box">
+                    <p style="font-size: 1.4rem !important; line-height: 1.3 !important;">"{datos['frase_radical']}"</p>
+                </div>
+                """
                 st.markdown(html_frase, unsafe_allow_html=True)
 
                 html_tesis = f"""
@@ -254,7 +251,6 @@ if boton:
                     st.markdown("**📢 Propaganda Generada por la Máquina:**")
                     with st.spinner(f"Renderizando estética: {datos.get('estilo_visual', 'ÉPICA CALLEJERA')}..."):
                         
-                        # DICCIONARIO DE ESTILOS
                         ESTILOS_UCR = {
                             "ÉPICA CALLEJERA": """
                                 Style: Vintage political lithography poster (Argentina 1983), grainy paper texture. 
@@ -295,6 +291,7 @@ if boton:
 
     else:
         st.warning("Por favor ingresá un tema para consultar a la Máquina.")
+
 
 
 
