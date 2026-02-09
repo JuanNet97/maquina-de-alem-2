@@ -29,7 +29,7 @@ st.markdown("""
         color: #333333 !important;
     }
     
-    /* CAJA 1: LA FRASE RADICAL (Impacto) */
+    /* CAJA 1: LA FRASE RADICAL (Impacto - Recuadro Rojo) */
     .headline-box {
         background-color: #D32F2F !important;
         color: white !important;
@@ -45,7 +45,7 @@ st.markdown("""
         border: 2px solid #B71C1C !important;
     }
 
-    /* CAJA 2: TESIS (Análisis) */
+    /* CAJA 2: TESIS (Análisis - Recuadro Blanco) */
     .thesis-box {
         background-color: #fff !important;
         padding: 25px;
@@ -75,7 +75,7 @@ st.markdown("""
         margin-bottom: 10px;
     }
     
-    /* CAJA 3: EVIDENCIA (Cita) */
+    /* CAJA 3: EVIDENCIA (Cita - Recuadro Gris) */
     .quote-box {
         background-color: #ECEFF1 !important;
         padding: 20px;
@@ -170,7 +170,6 @@ with col1:
 with col2:
     generar_img = st.checkbox("Generar Meme", value=True)
 
-# --- 6. LÓGICA DE PROCESAMIENTO (BALANCE: REDACCIÓN POTENTE + CITAS REALES) ---
 # --- 6. LÓGICA DE PROCESAMIENTO (MODO EXTRACTIVO PURO) ---
 if boton:
     if tema_usuario:
@@ -188,6 +187,7 @@ if boton:
             PASO 1: LA POSTURA (Recuadro Rojo - Generativo)
             - Redacta una **LÍNEA DISCURSIVA DESARROLLADA** (No slogan).
             - Debe ser una sentencia política de 2 o 3 frases que fije la posición del partido sobre el tema, usando la lógica de los conceptos de la tesis.
+            - Tono: Solemne, principista, histórico.
 
             PASO 2: EL CONCEPTO (Recuadro Blanco - Analítico)
             - Identifica el "Significante" (Concepto de la Tesis) que justifica esa postura.
@@ -306,5 +306,6 @@ if boton:
                 st.error(f"Error de sistema: {e}")
 
     else:
-        st.warning("
+        st.warning("Por favor ingresá un tema para consultar a la Máquina.")
+
 
