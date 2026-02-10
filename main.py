@@ -158,6 +158,7 @@ st.markdown("### ¿Qué dice el radicalismo sobre...")
 
 st.info("""
 **PROYECTO ACADÉMICO EXPERIMENTAL** 
+
 Desarrollado en el marco de la investigación de Juan Ignacio Net como parte de su trabajo final de la **Maestría en Comunicación Política de la Universidad Austral** con fines de divulgación.
 
 Esta API está alimentada exclusivamente por los resultados de la investigación como un ejercicio critico: la idea de que el discurso politico puede ser coherente y a la vez adatarse a las nuevas circunstancias sin perder identidad. 
@@ -347,6 +348,7 @@ if boton:
 
     else:
         st.warning("Por favor ingresá un tema para consultar a la Máquina.")
+
 
 
 
