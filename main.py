@@ -190,7 +190,7 @@ if boton:
             10. "Cambio / Renovación": Renovación frente a la corrupción, inmovilismo y decadencia. (Ref: Alem, Alfonsín, De la Rúa, Manes).
             """
 
-            # 2. El Prompt de Clasificación Estricta
+           # --- PROMPT: TRADUCCIÓN SEMÁNTICA HISTÓRICA ---
             prompt_sistema = f"""
             Eres "La Máquina de Alem". Tu objetivo es la DIVULGACIÓN CIENTÍFICA de la Tesis de Maestría provista.
             
@@ -202,27 +202,35 @@ if boton:
 
             TU MISIÓN PARA EL TEMA: "{tema_usuario}"
 
+            INSTRUCCIONES DE PROCESAMIENTO:
+
             PASO 1: CLASIFICACIÓN (El Cerebro)
-            - Analiza el tema del usuario y elige CUÁL de los 10 significantes de la lista de arriba aplica mejor.
-            - ⚠️ PROHIBIDO inventar categorías. Debes usar el nombre exacto (ej: "Justicia Social").
+            - Elige CUÁL de los 10 significantes aplica mejor. Usa el nombre exacto.
 
             PASO 2: REDACCIÓN POLÍTICA (Recuadro Rojo)
-            - Redacta una sentencia política desarrollada en 2 o 3 oraciones (no un slogan corto).
-            - Debe aplicar la definición del Significante elegido al tema actual.
-            - Tono: Doctrinario, solemne y radical.
+            - Redacta una sentencia política de **EXACTAMENTE 2 o 3 ORACIONES**.
+            - Aplica la definición del Significante al tema actual con tono doctrinario.
 
-            PASO 3: JUSTIFICACIÓN TEÓRICA (Recuadro Blanco)
-            - Explica POR QUÉ este tema activa ese Significante específico según la definición dada.
+            PASO 3: BÚSQUEDA SEMÁNTICA (La Clave del Análisis)
+            - El tema del usuario es ACTUAL (ej: "Redes Sociales", "Veto Universitario").
+            - El texto fuente es HISTÓRICO.
+            - **ACCIÓN:** Genera mentalmente una lista de **Palabras Clave Históricas** relacionadas.
+              * Ejemplo: Si el tema es "Veto Universitario", busca: "Reforma", "Educación", "Libre Pensamiento", "Autonomía".
+              * Ejemplo: Si el tema es "Ajuste a Jubilados", busca: "Desprotegidos", "Solidaridad", "Derechos", "Ancianos".
+            - Usa esas palabras clave para escanear el texto y encontrar la cita más pertinente.
 
-            PASO 4: EVIDENCIA (Recuadro Gris)
-            - Busca en el texto de la Tesis una cita textual o fragmento analizado que corresponda a los autores de ese significante (ver lista de Ref).
-            - Si NO hay cita textual exacta en el archivo, devuelve el valor "null".
+            PASO 4: JUSTIFICACIÓN TEÓRICA (Recuadro Blanco)
+            - Explica la relación: "¿Cómo se conecta el tema actual con las palabras clave históricas y el Significante elegido?".
+
+            PASO 5: EVIDENCIA (Recuadro Gris)
+            - Extrae el fragmento LITERAL encontrado gracias a la búsqueda semántica.
+            - Si aun buscando por palabras clave NO encuentras nada relevante, devuelve "null".
 
             FORMATO JSON:
             {{
-                "frase_radical": "Texto desarrollado de la postura política...",
-                "nombre_meme": "NOMBRE EXACTO DEL SIGNIFICANTE (De la lista de 10)",
-                "explicacion_meme": "Justificación teórica...",
+                "frase_radical": "Texto de 2 o 3 oraciones...",
+                "nombre_meme": "NOMBRE EXACTO DEL SIGNIFICANTE",
+                "explicacion_meme": "Justificación que mencione la conexión entre el tema y las palabras clave históricas...",
                 "cita_historica": "Texto literal encontrado O null",
                 "autor_cita": "Autor y año O null",
                 "estilo_visual": "ÉPICA CALLEJERA, INSTITUCIONAL SOLEMNE o MODERNISMO ABSTRACTO",
@@ -306,6 +314,7 @@ if boton:
 
     else:
         st.warning("Por favor ingresá un tema para consultar a la Máquina.")
+
 
 
 
