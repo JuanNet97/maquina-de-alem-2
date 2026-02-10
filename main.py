@@ -157,9 +157,9 @@ st.title("/// LA MÁQUINA DE ALEM")
 st.markdown("### ¿Qué dice el radicalismo sobre...")
 
 st.info("""
-**PROYECTO ACADÉMICO EXPERIMENTAL** Desarrollado en el marco de la investigación de Juan Ignacio Net como parte de su trabajo final de la **Maestría en Comunicación Política de la Universidad Austral**.
+**PROYECTO ACADÉMICO EXPERIMENTAL** Desarrollado en el marco de la investigación de Juan Ignacio Net como parte de su trabajo final de la **Maestría en Comunicación Política de la Universidad Austral** con fines de divulgación.
 
-Esta API está alimentada exclusivamente por los resultados de la investigación sobre los discursos de los máximos referentes históricos de la Unión Cívica Radical.
+Esta API está alimentada exclusivamente por los resultados de la investigación como un ejercicio critico: la idea de que el discurso politico puede ser coherente y a la vez adatarse a las nuevas circunstancias sin perder identidad. 
 
 ⚙️ *El modelo se encuentra actualmente en fase de calibración.*
 """)
@@ -170,11 +170,18 @@ with st.sidebar:
     st.header("FICHA TÉCNICA")
     
     st.info("""
-    **Autor:** Juan Ignacio Net
-    **Maestría:** Comunicación Política (Univ. Austral)
-    **Hipótesis:** El radicalismo posee una estructura discursiva caracteristica que se reproduce a lo largo del tiempo con memes y significantes estables y versatiles
+    **PROYECTO:** La Máquina de Alem (v2.1)
+    **AUTOR:** Juan Ignacio Net
+    **MAESTRÍA:** Comunicación Política (Univ. Austral)
     
-    **Metodología:** Analisis de discurso a partir de de ocho discursos de referentes historicos de la UCR 
+    ---
+    **DISEÑO DE INVESTIGACIÓN:**
+    * **Hipótesis:** La identidad del discurso radical se estructura sobre una matriz de significantes estables ("memes") que garantizan su supervivencia y adaptabilidad histórica.
+    * **Metodología:** Análisis cualitativo de discurso sobre un corpus de 8 discursos fundacionales y contemporáneos de la UCR (1890-2023)
+    * **Categorías:** 10 significante-memes parametrizados surgidos del analísis discursivo.
+    
+    ---
+    **NOTAS TÉCNICAS:** El modelo utiliza procesamiento de lenguaje natural para clasificar inputs actuales según la lógica interna de la tesis.
     """)
 
 with st.expander("📘 Metodología", expanded=False):
@@ -339,6 +346,7 @@ if boton:
 
     else:
         st.warning("Por favor ingresá un tema para consultar a la Máquina.")
+
 
 
 
