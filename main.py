@@ -163,6 +163,24 @@ Esta API está alimentada exclusivamente por los resultados de la investigación
 
 ⚙️ *El modelo se encuentra actualmente en fase de calibración.*
 """)
+with st.sidebar:
+    st.header("Ficha Técnica")
+    st.info("""
+    **Autor:** Juan Ignacio Net
+    **Maestría:** Comunicación Política (Univ. Austral)
+    """)
+    st.markdown("---")
+    # ACÁ PEGÁ LA HIPÓTESIS REAL PARA QUE YO NO LA INVENTE:
+    st.caption("**Hipótesis:** *El radicalismo posee una estructura discursiva caracteristica que se reproduce a lo largo del tiempo con memes y significantes estables y versatiles*. ")
+
+with st.expander("📘 Marco Teórico: Metodología", expanded=False):
+    st.markdown("""
+    Esta herramienta opera bajo la matriz teórica de la Tesis que consistio en el analísis de ocho discursos de referentes historicos de la UCR.
+    **Procedimiento:**
+    1.  **Detección:** Identifica cuál de los **Significantes** (categorías de análisis) se activa con el tema ingresado.
+    2.  **Procesamiento:** Genera una postura doctrinaria (Rojo) y una justificación teórica (Blanco).
+    3.  **Evidencia:** Rastrea citas textuales en el corpus de discursos cargado en el sistema (Gris).
+    """)
 tema_usuario = st.text_input("", placeholder="Ej: El veto a las universidades, los jubilados, la corrupción...")
 
 col1, col2 = st.columns([0.65, 0.35])
@@ -315,6 +333,7 @@ if boton:
 
     else:
         st.warning("Por favor ingresá un tema para consultar a la Máquina.")
+
 
 
 
