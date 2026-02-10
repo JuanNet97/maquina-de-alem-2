@@ -173,6 +173,7 @@ with st.sidebar:
     **Autor:** Juan Ignacio Net
     **Maestría:** Comunicación Política (Univ. Austral)
     **Hipótesis:** El radicalismo posee una estructura discursiva caracteristica que se reproduce a lo largo del tiempo con memes y significantes estables y versatiles
+    
     **Metodología:** Analisis de discurso a partir de de ocho discursos de referentes historicos de la UCR 
     """)
 
@@ -338,6 +339,7 @@ if boton:
 
     else:
         st.warning("Por favor ingresá un tema para consultar a la Máquina.")
+
 
 
 
