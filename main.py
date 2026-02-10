@@ -172,17 +172,17 @@ with st.sidebar:
     st.info("""
     **Autor:** Juan Ignacio Net
     **Maestría:** Comunicación Política (Univ. Austral)
-    
-    ---
-    **Hipótesis:**
-    [El radicalismo posee una estructura discursiva caracteristica que se reproduce a lo largo del tiempo con memes y significantes estables y versatiles]
+    **Hipótesis:**El radicalismo posee una estructura discursiva caracteristica que se reproduce a lo largo del tiempo con memes y significantes estables y versatiles
+    **Metodología:** Analisis de discurso a partir de de ocho discursos de referentes historicos de la UCR 
     """)
 
 with st.expander("📘 Metodología", expanded=False):
     st.markdown("""
-    Esta herramienta opera bajo la matriz teórica de la Tesis que consistio en el analísis de ocho discursos de referentes historicos de la UCR.
+    
+    Esta herramienta opera bajo la matriz teórica de la Tesis. 
+    
     **Procedimiento:**
-    1.  **Detección:** Identifica cuál de los **Significantes** (categorías de análisis) se activa con el tema ingresado.
+    1.  **Detección:** Identifica cuál de los **Significantes** (categorías resultantes del analisis de la investigacion) se activa con el tema ingresado.
     2.  **Procesamiento:** Genera una postura doctrinaria (Rojo) y una justificación teórica (Blanco).
     3.  **Evidencia:** Rastrea citas textuales en el corpus de discursos cargado en el sistema (Gris).
     """)
@@ -338,6 +338,7 @@ if boton:
 
     else:
         st.warning("Por favor ingresá un tema para consultar a la Máquina.")
+
 
 
 
