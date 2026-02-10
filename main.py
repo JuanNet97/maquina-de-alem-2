@@ -163,13 +163,19 @@ Esta API está alimentada exclusivamente por los resultados de la investigación
 
 ⚙️ *El modelo se encuentra actualmente en fase de calibración.*
 """)
+
 with st.sidebar:
-    st.header("Ficha Técnica")
+    st.image("https://upload.wikimedia.org/wikipedia/commons/thumb/0/07/Escudo_de_la_Uni%C3%B3n_C%C3%ADvica_Radical.svg/1200px-Escudo_de_la_Uni%C3%B3n_C%C3%ADvica_Radical.svg.png", width=60)
+    
+    st.header("FICHA TÉCNICA")
+    
     st.info("""
     **Autor:** Juan Ignacio Net
     **Maestría:** Comunicación Política (Univ. Austral)
-    """)
-    **Hipótesis de trabajo:**El radicalismo posee una estructura discursiva caracteristica que se reproduce a lo largo del tiempo con memes y significantes estables y versatilesComunicación Política (Univ. Austral)
+    
+    ---
+    **Hipótesis:**
+    [El radicalismo posee una estructura discursiva caracteristica que se reproduce a lo largo del tiempo con memes y significantes estables y versatiles]
     """)
 
 with st.expander("📘 Metodología", expanded=False):
@@ -332,6 +338,7 @@ if boton:
 
     else:
         st.warning("Por favor ingresá un tema para consultar a la Máquina.")
+
 
 
 
