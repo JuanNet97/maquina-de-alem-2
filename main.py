@@ -182,7 +182,7 @@ with st.sidebar:
     * **Categorías:** 10 significante-memes parametrizados surgidos del analísis discursivo.
     
     ---
-    **NOTAS TÉCNICAS:** El modelo utiliza procesamiento de lenguaje natural para clasificar inputs actuales según la lógica interna de la tesis.
+    **NOTAS TÉCNICAS:** El modelo utiliza procesamiento de lenguaje natural para clasificar inputs actuales según la lógica interna del discurso radical identificado en la tesis.
     """)
 
 with st.expander("¿Comó funciona **La Maquina de Alem**?", expanded=False):
@@ -347,6 +347,7 @@ if boton:
 
     else:
         st.warning("Por favor ingresá un tema para consultar a la Máquina.")
+
 
 
 
