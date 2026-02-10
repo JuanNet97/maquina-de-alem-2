@@ -173,7 +173,9 @@ with st.sidebar:
     
     st.info("""
     **PROYECTO:** La Máquina de Alem (v2.1)
+   
     **AUTOR:** Juan Ignacio Net
+   
     **MAESTRÍA:** Comunicación Política (Univ. Austral)
     
     ---
@@ -348,6 +350,7 @@ if boton:
 
     else:
         st.warning("Por favor ingresá un tema para consultar a la Máquina.")
+
 
 
 
