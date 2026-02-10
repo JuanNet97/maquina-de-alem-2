@@ -152,16 +152,34 @@ base_de_conocimiento = cargar_conocimiento()
 
 # --- 4. INTERFAZ DE USUARIO ---
 
+# --- B. CUERPO PRINCIPAL ---
+# 1. Barra Lateral con Ficha Técnica
+with st.sidebar:
+    st.image("https://upload.wikimedia.org/wikipedia/commons/thumb/0/07/Escudo_de_la_Uni%C3%B3n_C%C3%ADvica_Radical.svg/1200px-Escudo_de_la_Uni%C3%B3n_C%C3%ADvica_Radical.svg.png", width=60)
+    st.markdown("## Ficha Técnica")
+    st.info("""
+    **Proyecto:** La Máquina de Alem
+    **Contexto:** Tesis de Maestría en Comunicación Política.
+    **Autor:** Juan Ignacio Net
+    **Institución:** Universidad Austral
+    """)
+    st.markdown("---")
+    st.caption("Hipótesis: El discurso radical se estructura sobre 10 Significantes Históricos (Memes) que se replican desde 1890.")
+
+# 2. Título y Explicación Metodológica
 st.title("/// LA MÁQUINA DE ALEM")
-st.markdown("### ¿Qué dice el radicalismo sobre...")
+st.markdown("### Simulador de Discurso Radical basado en Matriz Teórica")
 
-st.info("""
-**PROYECTO ACADÉMICO EXPERIMENTAL** Desarrollado en el marco de la investigación de Juan Ignacio Net como parte de su trabajo final de la **Maestría en Comunicación Política de la Universidad Austral**.
-
-Esta API está alimentada exclusivamente por los resultados de la investigación sobre los discursos de los máximos referentes históricos de la Unión Cívica Radical.
-
-⚙️ *El modelo se encuentra actualmente en fase de calibración.*
-""")
+with st.expander("📘 LEER ANTES: Marco Teórico y Funcionamiento", expanded=False):
+    st.markdown("""
+    Esta herramienta no opina, **procesa doctrinariamente**:
+    1.  **Entrada:** Ingresás un tema de coyuntura.
+    2.  **Matriz:** El sistema escanea los **10 Significantes** de la Tesis (Ética, República, Reparación, etc.).
+    3.  **Salida:**
+        * 🔴 **Postura:** Redacción basada en reglas del significante activado.
+        * ⚪ **Teoría:** Explicación del vínculo Tesis-Realidad.
+        * ⚫ **Evidencia:** Búsqueda de citas textuales en el archivo histórico (Alem, Yrigoyen, Balbín, Alfonsín, etc.).
+    """)
 tema_usuario = st.text_input("", placeholder="Ej: El veto a las universidades, los jubilados, la corrupción...")
 
 col1, col2 = st.columns([0.65, 0.35])
@@ -314,6 +332,7 @@ if boton:
 
     else:
         st.warning("Por favor ingresá un tema para consultar a la Máquina.")
+
 
 
 
