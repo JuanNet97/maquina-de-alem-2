@@ -207,7 +207,7 @@ if boton:
             - ⚠️ PROHIBIDO inventar categorías. Debes usar el nombre exacto (ej: "Justicia Social").
 
             PASO 2: REDACCIÓN POLÍTICA (Recuadro Rojo)
-            - Redacta una sentencia política desarrollada (no un slogan corto).
+            - Redacta una sentencia política desarrollada en 2 o 3 oraciones (no un slogan corto).
             - Debe aplicar la definición del Significante elegido al tema actual.
             - Tono: Doctrinario, solemne y radical.
 
@@ -306,5 +306,6 @@ if boton:
 
     else:
         st.warning("Por favor ingresá un tema para consultar a la Máquina.")
+
 
 
