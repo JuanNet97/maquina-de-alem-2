@@ -169,7 +169,8 @@ with st.sidebar:
     **Autor:** Juan Ignacio Net
     **Maestría:** Comunicación Política (Univ. Austral)
     """)
-    **Hipótesis de trabajo:**El radicalismo posee una estructura discursiva caracteristica que se reproduce a lo largo del tiempo con memes y significantes estables y versatiles*. ")
+    **Hipótesis de trabajo:**El radicalismo posee una estructura discursiva caracteristica que se reproduce a lo largo del tiempo con memes y significantes estables y versatilesComunicación Política (Univ. Austral)
+    """)
 
 with st.expander("📘 Metodología", expanded=False):
     st.markdown("""
@@ -331,6 +332,7 @@ if boton:
 
     else:
         st.warning("Por favor ingresá un tema para consultar a la Máquina.")
+
 
 
 
