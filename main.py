@@ -138,20 +138,29 @@ else:
     st.error("⚠️ CRÍTICO: No se detectó la API Key. Configurala en 'Secrets'.")
     st.stop()
 
-# --- 3. CARGA DE CONOCIMIENTO (SIN LÍMITES) ---
+# --- 3. CARGA DE CONOCIMIENTO (TESIS + DISCURSOS) ---
 @st.cache_data
 def cargar_archivos():
     try:
-        # Intenta cargar los dos archivos por separado
+        # 1. Cargar Tesis (Obligatorio)
         with open("conocimiento.txt", "r", encoding="utf-8") as f1:
             tesis = f1.read()
-        with open("discursos.txt", "r", encoding="utf-8") as f2:
-            discursos = f2.read()
+            
+        # 2. Cargar Discursos (Opcional por ahora: si no existe, usa vacío)
+        try:
+            with open("discursos.txt", "r", encoding="utf-8") as f2:
+                discursos = f2.read()
+        except FileNotFoundError:
+            discursos = "" # Evita el error si aún no creaste el archivo
+            
         return tesis, discursos
+
     except FileNotFoundError:
-        # Si falla, avisa pero no rompe todo (pide cargar los archivos)
-        st.error("⚠️ Error Crítico: Faltan los archivos 'conocimiento.txt' o 'discursos.txt'. Súbelos a GitHub.")
+        st.error("⚠️ Error Crítico: Falta el archivo 'conocimiento.txt'.")
         st.stop()
+
+# ESTA ES LA LÍNEA CLAVE QUE ARREGLA EL ERROR (Define las variables nuevas)
+texto_tesis, texto_discursos = cargar_archivos()
 
 # Cargamos ambos por separado
 texto_tesis, texto_discursos = cargar_archivos()
@@ -356,6 +365,7 @@ if boton:
 
     else:
         st.warning("Por favor ingresá un tema para consultar a la Máquina.")
+
 
 
 
