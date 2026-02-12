@@ -167,38 +167,7 @@ base_de_conocimiento = texto_tesis
 
 texto_tesis, texto_discursos = cargar_conocimiento()
 
-# --- 💉 INYECCIÓN DE EMERGENCIA (PARA QUE LOS LEA SÍ O SÍ) ---
-# Pegamos esto directo en el código para ignorar problemas del archivo .txt
-refuerzo_nuevos = """
-*** DOCUMENTO 10 ***
-AUTOR: CRISÓLOGO LARRALDE (1954)
-TEXTO:
-Queremos una revisión del ordenamiento capitalista. Queremos sacar el oro de la posición de símbolo augusto y poner en su lugar al hombre.
-No hay lugar más frío ni más duro que vivir durmiendo sobre montañas de oro.
-El peronismo dice “La libertad no sirve para comer”. Nosotros decimos que la libertad es lo único que sirve.
 
-*** DOCUMENTO 11 ***
-AUTOR: CRISÓLOGO LARRALDE (1959)
-TEXTO:
-Desentenderse de la política es no querer saber cuánto se va a pagar por el pan.
-Todos tenemos que ser políticos. El político es un desdichado que sigue caminando porque tiene un deber que cumplir.
-
-*** DOCUMENTO 12 ***
-AUTOR: FLORENTINA GÓMEZ MIRANDA (1987)
-TEXTO:
-Se dice que el divorcio destruye la familia. Yo digo que lo que destruye la familia es la falta de amor.
-Mantener un matrimonio sin amor es una hipocresía.
-La ley debe ser laica. Las conciencias religiosas son respetables, pero no pueden imponerse a la ley civil.
-
-*** DOCUMENTO 13 ***
-AUTOR: FLORENTINA GÓMEZ MIRANDA (1996)
-TEXTO:
-Si una mujer entra a la política, cambia la mujer. Si muchas mujeres entran, cambia la política.
-No pedimos privilegios, pedimos igualdad. El cupo no es un techo, es un piso.
-"""
-
-# ACÁ OCURRE LA MAGIA: Sumamos el texto manual al que vino del archivo
-texto_discursos = texto_discursos + "\n" + refuerzo_nuevos
 # --- 4. INTERFAZ DE USUARIO ---
 
 # --- B. CUERPO PRINCIPAL ---
@@ -268,16 +237,35 @@ if boton:
             
             # 1. Definimos TU LISTA EXACTA como la "Constitución" del modelo
             lista_significantes = """
-            1. "Ética Pública": Compromiso con la transparencia, honestidad y rechazo a la corrupción. (Ref: Alem, Illia, Alfonsín, De la Rúa, Manes).
+            1. "Ética Pública": Compromiso con la transparencia, honestidad y rechazo a la corrupción. (Ref: Alem, Illia, Alfonsín, De la Rúa, Manes, Lebensohn).
+               -> USAR ESPECÍFICAMENTE PARA: Casos de corrupción, Ficha Limpia, privilegios de la política, sueldos de funcionarios, transparencia en la gestión, honestidad personal.
+
             2. "Democracia": Defensa activa de las instituciones, participación popular y libertades civiles. (Ref: Alem, Yrigoyen, Illia, Alfonsín, Manes).
-            3. "Juventud": Interpelación a la juventud como sujeto clave de transformación. (Ref: Alem, Alfonsín, Manes).
-            4. "Reparación Nacional": Restaurar un orden social justo y democrático frente a injusticias. (Ref: Yrigoyen, Illia, Alfonsín, Manes).
+               -> USAR ESPECÍFICAMENTE PARA: Voto, fraude, Derechos Humanos, libertad de expresión. (IMPORTANTE: Incluir aquí temas de DERECHOS CIVILES como Divorcio, Matrimonio Igualitario, Género y Feminismo - Florentina Gómez Miranda).
+
+            3. "Juventud": Interpelación a la juventud como sujeto clave de transformación. (Ref: Alem, Alfonsín, Manes, Lebensohn, Junta Coordinadora NacionaL- Juventud Radical).
+               -> USAR ESPECÍFICAMENTE PARA: Estudiantes, Universidad Pública, Reforma del 18, Franja Morada, emigración de jóvenes, futuro, cerebro/ciencia.
+
+            4. "Reparación Nacional": Restaurar un orden social justo y democrático frente a injusticias. (Ref: Yrigoyen, Illia, Alfonsín, Manes, Balbin, Movimiento de Intransigencia y Renovacion).
+               -> USAR ESPECÍFICAMENTE PARA: Crisis moral, "sanar" el país, reconstrucción después de una crisis, herencia recibida, recuperar valores perdidos.
+
             5. "Sacrificio": Compromiso ético y personal extremo por ideales políticos. (Ref: Alem, Yrigoyen, Alfonsín).
-            6. "Unidad Nacional": Cohesión social y política frente a crisis graves. (Ref: Yrigoyen, Alfonsín, De la Rúa, Manes).
-            7. "Justicia Social": Distribución equitativa de recursos y oportunidades. (Ref: Illia, Alfonsín, Manes).
-            8. "Institucionalidad": Respeto a las instituciones, Constitución y legalidad republicana. (Ref: Alvear, Illia, Alfonsín, De la Rúa).
+               -> USAR ESPECÍFICAMENTE PARA: Austeridad, renunciamientos históricos, militancia desinteresada, "dar la vida", anti-frivolidad.
+
+            6. "Unidad Nacional": Cohesión social y política frente a crisis graves. (Ref: Yrigoyen, Alfonsín, De la Rúa, Manes, Balbin).
+               -> USAR ESPECÍFICAMENTE PARA: La Grieta, violencia política, Pacto de Mayo, acuerdos, diálogo, convivencia democrática, "terminar con el odio".
+
+            7. "Justicia Social": Distribución equitativa de recursos y oportunidades. (Ref: Illia, Alfonsín, Manes, Larralde, Federacion Universitaria de Córdoba).
+               -> USAR ESPECÍFICAMENTE PARA: (ESTRICTAMENTE ECONÓMICO) Pobreza, Jubilados, Salarios, Inflación, Hambre, Desigualdad de ingresos, Salud Pública, Vivienda.
+
+            8. "Institucionalidad": Respeto a las instituciones, Constitución y legalidad republicana. (Ref: Alvear, Illia, Alfonsín, De la Rúa, Goméz Miranda).
+               -> USAR ESPECÍFICAMENTE PARA: Corte Suprema, División de Poderes, Decretos (DNU) vs Leyes, funcionamiento del Congreso, respeto a las reglas de juego.
+
             9. "Constitucionalismo Ético": Legitimidad basada en la Constitución y valores éticos. (Ref: Illia, Alfonsín, De la Rúa).
-            10. "Cambio / Renovación": Renovación frente a la corrupción, inmovilismo y decadencia. (Ref: Alem, Alfonsín, De la Rúa, Manes).
+               -> USAR ESPECÍFICAMENTE PARA: El Preámbulo, la Constitución como "biblia laica", el Estado de Derecho como valor moral superior, garantías constitucionales.
+
+            10. "Cambio / Renovación": Renovación frente a la corrupción, inmovilismo y decadencia. (Ref: Alem, Alfonsín, De la Rúa, Manes, Junta Coordinadora NacionaL- Juventud Radical, Movimeinto de Renovación y Cambio).
+               -> USAR ESPECÍFICAMENTE PARA: Modernización, Progreso, Tecnología, combatir el "atraso", romper el status quo, nuevas ideas vs. viejas prácticas.
             """
 
            # --- PROMPT: TRADUCCIÓN SEMÁNTICA HISTÓRICA ---
@@ -299,6 +287,8 @@ if boton:
 
             PASO 1: CLASIFICACIÓN (El Cerebro)
             - Basándote en la FUENTE 1 (Tesis), elige cuál de los 10 significantes aplica mejor.
+            Elige el significante MÁS ESPECÍFICO.
+            - ⚠️ PROHIBIDO usar "Justicia Social" por defecto. Úsalo SOLO si el tema es estrictamente económico o de pobreza
 
             PASO 2: REDACCIÓN POLÍTICA (Recuadro Rojo)
             - Redacta una sentencia política de 2 o 3 oraciones. Tono doctrinario.
@@ -406,6 +396,7 @@ if boton:
 
     else:
         st.warning("Por favor ingresá un tema para consultar a la Máquina.")
+
 
 
 
