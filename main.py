@@ -139,14 +139,21 @@ else:
     st.stop()
 
 # --- 3. CARGA DE CONOCIMIENTO (SIN LÍMITES) ---
+# --- 3. CARGA DE CONOCIMIENTO (TESIS + DISCURSOS) ---
 @st.cache_data
-def cargar_conocimiento():
+def cargar_archivos():
     try:
-        with open("conocimiento.txt", "r", encoding="utf-8") as f:
-            return f.read() 
-    except FileNotFoundError:
-        st.error("⚠️ Error: Falta el archivo 'conocimiento.txt'. Cárgalo en GitHub.")
+        with open("conocimiento.txt", "r", encoding="utf-8") as f1:
+            tesis = f1.read()
+        with open("discursos.txt", "r", encoding="utf-8") as f2:
+            discursos = f2.read()
+        return tesis, discursos
+    except FileNotFoundError as e:
+        st.error(f"⚠️ Error: No se encontró el archivo {e.filename}. Subí 'conocimiento.txt' y 'discursos.txt' a GitHub.")
         st.stop()
+
+# Cargamos ambos por separado
+texto_tesis, texto_discursos = cargar_archivos()
 
 base_de_conocimiento = cargar_conocimiento()
 
@@ -230,8 +237,11 @@ if boton:
             prompt_sistema = f"""
             Eres "La Máquina de Alem". Tu objetivo es la DIVULGACIÓN CIENTÍFICA de la Tesis de Maestría provista.
             
-            TU BASE DE CONOCIMIENTO (Texto Fuente):
-            {base_de_conocimiento}
+            FUENTE 1 (LA TESIS - El Cerebro):
+            {texto_tesis}
+
+            FUENTE 2 (EL CORPUS DE DISCURSOS - La Voz):
+            {texto_discursos}
 
             TUS CATEGORÍAS DE ANÁLISIS (USAR SOLO ESTAS 10):
             {lista_significantes}
@@ -241,33 +251,28 @@ if boton:
             INSTRUCCIONES DE PROCESAMIENTO:
 
             PASO 1: CLASIFICACIÓN (El Cerebro)
-            - Elige CUÁL de los 10 significantes aplica mejor. Usa el nombre exacto.
+            - Basándote en la FUENTE 1 (Tesis), elige cuál de los 10 significantes aplica mejor.
 
             PASO 2: REDACCIÓN POLÍTICA (Recuadro Rojo)
-            - Redacta una sentencia política de **EXACTAMENTE 2 o 3 ORACIONES**.
-            - Aplica la definición del Significante al tema actual con tono doctrinario.
+            - Redacta una sentencia política de 2 o 3 oraciones. Tono doctrinario.
 
-            PASO 3: BÚSQUEDA SEMÁNTICA (La Clave del Análisis)
-            - El tema del usuario es ACTUAL (ej: "Redes Sociales", "Veto Universitario").
-            - El texto fuente es HISTÓRICO.
-            - **ACCIÓN:** Genera mentalmente una lista de **Palabras Clave Históricas** relacionadas.
-              * Ejemplo: Si el tema es "Veto Universitario", busca: "Reforma", "Educación", "Libre Pensamiento", "Autonomía".
-              * Ejemplo: Si el tema es "Ajuste a Jubilados", busca: "Desprotegidos", "Solidaridad", "Derechos", "Ancianos".
-            - Usa esas palabras clave para escanear el texto y encontrar la cita más pertinente.
+            PASO 3: BÚSQUEDA SEMÁNTICA DE EVIDENCIA
+            - Traduce el tema actual a conceptos históricos.
+            - ⚠️ IMPORTANTE: Busca una cita LITERAL **exclusivamente en la FUENTE 2 (Discursos)**.
+            - Si la cita no está en la FUENTE 2, devuelve "null" aunque el tema sea coherente. No inventes.
 
             PASO 4: JUSTIFICACIÓN TEÓRICA (Recuadro Blanco)
-            - Explica la relación: "¿Cómo se conecta el tema actual con las palabras clave históricas y el Significante elegido?".
+            - Explica la conexión entre el tema y el significante usando la lógica de la FUENTE 1 (Tesis).
 
             PASO 5: EVIDENCIA (Recuadro Gris)
-            - Extrae el fragmento LITERAL encontrado gracias a la búsqueda semántica.
-            - Si aun buscando por palabras clave NO encuentras nada relevante, devuelve "null".
+            - Extrae el fragmento literal encontrado en la FUENTE 2.
 
             FORMATO JSON:
             {{
                 "frase_radical": "Texto de 2 o 3 oraciones...",
                 "nombre_meme": "NOMBRE EXACTO DEL SIGNIFICANTE",
-                "explicacion_meme": "Justificación que mencione la conexión entre el tema y las palabras clave históricas...",
-                "cita_historica": "Texto literal encontrado O null",
+                "explicacion_meme": "Justificación teórica basada en Fuente 1...",
+                "cita_historica": "Texto literal encontrado en Fuente 2 O null",
                 "autor_cita": "Autor y año O null",
                 "estilo_visual": "ÉPICA CALLEJERA, INSTITUCIONAL SOLEMNE o MODERNISMO ABSTRACTO",
                 "prompt_meme": "Descripción visual"
@@ -350,6 +355,7 @@ if boton:
 
     else:
         st.warning("Por favor ingresá un tema para consultar a la Máquina.")
+
 
 
 
