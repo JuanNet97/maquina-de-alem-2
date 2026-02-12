@@ -138,20 +138,20 @@ else:
     st.error("⚠️ CRÍTICO: No se detectó la API Key. Configurala en 'Secrets'.")
     st.stop()
 
-# --- 3. CARGA DE CONOCIMIENTO (TESIS + DISCURSOS) ---
+# --- 3. CARGA DE CONOCIMIENTO (ARREGLO DEFINITIVO) ---
 @st.cache_data
-def cargar_archivos():
+def cargar_conocimiento():
     try:
         # 1. Cargar Tesis (Obligatorio)
         with open("conocimiento.txt", "r", encoding="utf-8") as f1:
             tesis = f1.read()
             
-        # 2. Cargar Discursos (Opcional por ahora: si no existe, usa vacío)
+        # 2. Cargar Discursos (Opcional: si no existe, usa vacío para no romper)
         try:
             with open("discursos.txt", "r", encoding="utf-8") as f2:
                 discursos = f2.read()
         except FileNotFoundError:
-            discursos = "" # Evita el error si aún no creaste el archivo
+            discursos = "" 
             
         return tesis, discursos
 
@@ -159,6 +159,8 @@ def cargar_archivos():
         st.error("⚠️ Error Crítico: Falta el archivo 'conocimiento.txt'.")
         st.stop()
 
+# LLAMADA A LA FUNCIÓN (Desempaquetamos en las dos variables que usa el prompt)
+texto_tesis, texto_discursos = cargar_conocimiento()
 # ESTA ES LA LÍNEA CLAVE QUE ARREGLA EL ERROR (Define las variables nuevas)
 texto_tesis, texto_discursos = cargar_archivos()
 
@@ -365,6 +367,7 @@ if boton:
 
     else:
         st.warning("Por favor ingresá un tema para consultar a la Máquina.")
+
 
 
 
