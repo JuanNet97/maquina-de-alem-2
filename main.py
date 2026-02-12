@@ -332,31 +332,7 @@ if boton:
                     temperature=0.2 
                 )
                 
-                import json
-                import re
-
-                try:
-                    # 1. LIMPIEZA: Sacamos los ```json y ``` que a veces manda la IA
-                    texto_limpio = response.text.replace("```json", "").replace("```", "").strip()
-                    
-                    # 2. PARSEO: Intentamos convertir el texto a Diccionario
-                    resultado_json = json.loads(texto_limpio)
-
-                except json.JSONDecodeError:
-                    # SI FALLA EL FORMATO: Creamos un diccionario de emergencia
-                    resultado_json = {}
-                
-                # 3. EXTRACCIÓN SEGURA (El secreto para que no explote)
-                # Usamos .get() en lugar de corchetes []. Si no existe, pone un texto por defecto.
-                
-                frase_radical = resultado_json.get("frase_radical", "⚠️ La Máquina está pensando... (Error de formato, intentá de nuevo).")
-                nombre_meme = resultado_json.get("nombre_meme", "Análisis Radical")
-                explicacion_meme = resultado_json.get("explicacion_meme", "No se pudo procesar la explicación técnica.")
-                
-                cita_historica = resultado_json.get("cita_historica", "null")
-                autor_cita = resultado_json.get("autor_cita", "")
-                prompt_meme = resultado_json.get("prompt_meme", "Poster político estilo radicalismo clásico")
-
+               datos = json.loads(response.text)
                 # --- OUTPUT VISUAL ---
 
                 # 1. Línea Discursiva (Rojo)
@@ -419,6 +395,7 @@ if boton:
 
     else:
         st.warning("Por favor ingresá un tema para consultar a la Máquina.")
+
 
 
 
