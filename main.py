@@ -184,7 +184,7 @@ Esta API está alimentada exclusivamente por los resultados de la investigación
 ⚙️ *El modelo se encuentra actualmente en fase de calibración.*
 """)
 
-with st.expander("**Ficha técnica y metodología**(Clic para desplegar)", expanded=False):
+with st.expander("**Ficha técnica y metodología**", expanded=False):
     
     col_a, col_b = st.columns([0.2, 0.8])
     
@@ -426,6 +426,7 @@ if boton:
 
     else:
         st.warning("Por favor ingresá un tema para consultar a la Máquina.")
+
 
 
 
