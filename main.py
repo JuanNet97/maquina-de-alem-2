@@ -184,28 +184,30 @@ Esta API está alimentada exclusivamente por los resultados de la investigación
 ⚙️ *El modelo se encuentra actualmente en fase de calibración.*
 """)
 
-with st.expander("📘 FICHA TÉCNICA Y METODOLOGÍA (Clic para desplegar)"
-    st.image("https://upload.wikimedia.org/wikipedia/commons/thumb/0/07/Escudo_de_la_Uni%C3%B3n_C%C3%ADvica_Radical.svg/1200px-Escudo_de_la_Uni%C3%B3n_C%C3%ADvica_Radical.svg.png", width=60)
+with st.expander("📘 FICHA TÉCNICA Y METODOLOGÍA (Clic para desplegar)", expanded=False):
     
-    st.header("FICHA TÉCNICA")
+    col_a, col_b = st.columns([0.2, 0.8])
+    with col_a:
+        # Usamos una versión thumbnail (200px) para que cargue rápido en móviles
+        st.image("https://upload.wikimedia.org/wikipedia/commons/thumb/0/07/Escudo_de_la_Uni%C3%B3n_C%C3%ADvica_Radical.svg/200px-Escudo_de_la_Uni%C3%B3n_C%C3%ADvica_Radical.svg.png", use_container_width=True)
+    with col_b:
+        st.markdown("""
+        **PROYECTO:** La Máquina de Alem (v2.1)  
+        **AUTOR:** Juan Ignacio Net  
+        **MAESTRÍA:** Comunicación Política (Univ. Austral)
+        """)
+
+    st.divider() 
     
-    st.info("""
-    **PROYECTO:** La Máquina de Alem (v2.1)
-   
-    **AUTOR:** Juan Ignacio Net
-   
-    **MAESTRÍA:** Comunicación Política (Univ. Austral)
-    
-    ---
+    st.markdown("""
     **DISEÑO DE INVESTIGACIÓN:**
     * **Hipótesis:** La identidad del discurso radical se estructura sobre una matriz de significantes estables ("memes") que garantizan su supervivencia y adaptabilidad histórica.
-    * **Metodología:** Análisis cualitativo de discurso sobre un corpus de 8 discursos fundacionales y contemporáneos de la UCR (1890-2023)
-    * **Categorías:** 10 significante-memes parametrizados surgidos del analísis discursivo.
+    * **Metodología:** Análisis cualitativo de discurso sobre un corpus de 8 discursos fundacionales y contemporáneos de la UCR (1890-2023).
+    * **Categorías:** 10 significante-memes parametrizados surgidos del análisis discursivo.
     
     ---
     **NOTAS TÉCNICAS:** El modelo utiliza procesamiento de lenguaje natural para clasificar inputs actuales según la lógica interna del discurso radical identificado en la tesis.
     """)
-
 with st.expander("¿Comó funciona **La Maquina de Alem**?", expanded=False):
     st.markdown("""
     
@@ -426,6 +428,7 @@ if boton:
 
     else:
         st.warning("Por favor ingresá un tema para consultar a la Máquina.")
+
 
 
 
