@@ -160,13 +160,9 @@ def cargar_conocimiento():
         st.error("⚠️ Error Crítico: Falta 'conocimiento.txt'.")
         st.stop()
 
-# --- AQUÍ ESTÁ EL TRUCO PARA QUE NO DE ERROR ---
-
-# 1. Desempaquetamos para el nuevo Prompt (lo que queríamos hacer)
 texto_tesis, texto_discursos = cargar_conocimiento()
 
-# 2. Definimos la variable vieja POR SI ACASO alguna línea vieja la llama
-# (Esto evita el NameError en la línea 168)
+# COMPATIBILIDAD (Para que no explote si algo viejo busca esta variable)
 base_de_conocimiento = texto_tesis
 
 # --- 4. INTERFAZ DE USUARIO ---
@@ -367,6 +363,7 @@ if boton:
 
     else:
         st.warning("Por favor ingresá un tema para consultar a la Máquina.")
+
 
 
 
