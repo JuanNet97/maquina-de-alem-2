@@ -184,7 +184,7 @@ Esta API está alimentada exclusivamente por los resultados de la investigación
 ⚙️ *El modelo se encuentra actualmente en fase de calibración.*
 """)
 
-with st.sidebar:
+with st.expander("📘 FICHA TÉCNICA Y METODOLOGÍA (Clic para desplegar)":
     st.image("https://upload.wikimedia.org/wikipedia/commons/thumb/0/07/Escudo_de_la_Uni%C3%B3n_C%C3%ADvica_Radical.svg/1200px-Escudo_de_la_Uni%C3%B3n_C%C3%ADvica_Radical.svg.png", width=60)
     
     st.header("FICHA TÉCNICA")
@@ -426,6 +426,7 @@ if boton:
 
     else:
         st.warning("Por favor ingresá un tema para consultar a la Máquina.")
+
 
 
 
