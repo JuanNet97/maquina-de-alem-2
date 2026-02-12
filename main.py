@@ -348,9 +348,6 @@ if boton:
                 # 3. ASIGNACIÓN CRÍTICA (Para que el resto del código funcione)
                 datos = resultado_json
 
-                except json.JSONDecodeError:
-                    # SI FALLA EL FORMATO: Creamos un diccionario de emergencia
-                    resultado_json = {}
                 
                 # 3. EXTRACCIÓN SEGURA (El secreto para que no explote)
                 # Usamos .get() en lugar de corchetes []. Si no existe, pone un texto por defecto.
@@ -429,6 +426,7 @@ if boton:
 
     else:
         st.warning("Por favor ingresá un tema para consultar a la Máquina.")
+
 
 
 
