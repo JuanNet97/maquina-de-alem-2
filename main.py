@@ -272,10 +272,14 @@ if boton:
 
             PASO 2: REDACCIÓN POLÍTICA (Recuadro Rojo)
             - Redacta una sentencia política de 2 o 3 oraciones. Tono doctrinario.
+            
 
-            PASO 3: BÚSQUEDA SEMÁNTICA DE EVIDENCIA
-            - Traduce el tema actual a conceptos históricos.
-            - ⚠️ IMPORTANTE: Busca una cita LITERAL **exclusivamente en la FUENTE 2 (Discursos)**.
+            PASO 3: BÚSQUEDA SEMÁNTICA DE EVIDENCIA (MODO ESTRICTO)
+            - Tu objetivo es encontrar una cita que hable ESPECÍFICAMENTE del tema "{tema_usuario}".
+            - ⚠️ PRIORIDAD ALTA: Busca primero palabras clave literales del tema (ej: si el tema es "Divorcio", busca la palabra "divorcio" o "familia" en el texto).
+            - Busca en todo el documento (hasta el final).
+            - Solo si no encuentras nada específico, busca una cita general sobre el Significante.
+            - Extrae la cita LITERAL de la FUENTE 2.
             - Si la cita no está en la FUENTE 2, devuelve "null" aunque el tema sea coherente. No inventes.
 
             PASO 4: JUSTIFICACIÓN TEÓRICA (Recuadro Blanco)
@@ -372,6 +376,7 @@ if boton:
 
     else:
         st.warning("Por favor ingresá un tema para consultar a la Máquina.")
+
 
 
 
