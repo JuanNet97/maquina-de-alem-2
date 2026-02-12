@@ -130,6 +130,30 @@ st.markdown("""
     }
     </style>
     """, unsafe_allow_html=True)
+/* FORZAR ESTILO EN EXPANDERS (Ficha Técnica y Cómo funciona) */
+    .streamlit-expanderHeader {
+        background-color: white !important;
+        color: #333333 !important;
+        border-radius: 5px !important;
+        font-weight: 600 !important;
+    }
+
+    .streamlit-expanderContent {
+        background-color: white !important;
+        color: #333333 !important;
+        border: 1px solid #f0f0f0 !important;
+        border-top: none !important;
+    }
+
+    /* Ajuste para que el texto dentro del expander no se pierda en modo oscuro */
+    .stExpander p, .stExpander li, .stExpander span {
+        color: #333333 !important;
+    }
+
+    /* Color de la flechita del desplegable */
+    .stExpander svg {
+        fill: #D32F2F !important;
+    }
 
 # --- 2. CONEXIÓN CON OPENAI ---
 if "OPENAI_API_KEY" in st.secrets:
@@ -426,6 +450,7 @@ if boton:
 
     else:
         st.warning("Por favor ingresá un tema para consultar a la Máquina.")
+
 
 
 
