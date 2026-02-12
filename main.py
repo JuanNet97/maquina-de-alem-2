@@ -184,12 +184,10 @@ Esta API está alimentada exclusivamente por los resultados de la investigación
 ⚙️ *El modelo se encuentra actualmente en fase de calibración.*
 """)
 
-with st.expander("📘 FICHA TÉCNICA Y METODOLOGÍA (Clic para desplegar)", expanded=False):
+with st.expander("**Ficha técnica y metodoloía**(Clic para desplegar)", expanded=False):
     
     col_a, col_b = st.columns([0.2, 0.8])
-    with col_a:
-        # Usamos una versión thumbnail (200px) para que cargue rápido en móviles
-        st.image("https://upload.wikimedia.org/wikipedia/commons/thumb/0/07/Escudo_de_la_Uni%C3%B3n_C%C3%ADvica_Radical.svg/200px-Escudo_de_la_Uni%C3%B3n_C%C3%ADvica_Radical.svg.png", use_container_width=True)
+    
     with col_b:
         st.markdown("""
         **PROYECTO:** La Máquina de Alem (v2.1)  
@@ -218,7 +216,7 @@ with st.expander("¿Comó funciona **La Maquina de Alem**?", expanded=False):
     2.  **Procesamiento:** Genera una postura doctrinaria (Rojo) y una justificación teórica (Blanco).
     3.  **Evidencia:** Rastrea citas textuales en el corpus de discursos cargado en el sistema (Gris).
     """)
-tema_usuario = st.text_input("", placeholder="Ej: El veto a las universidades, los jubilados, la corrupción...")
+tema_usuario = st.text_input("", placeholder="Escribi acá")
 
 col1, col2 = st.columns([0.65, 0.35])
 with col1:
@@ -428,6 +426,7 @@ if boton:
 
     else:
         st.warning("Por favor ingresá un tema para consultar a la Máquina.")
+
 
 
 
