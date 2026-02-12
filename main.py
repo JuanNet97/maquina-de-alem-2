@@ -230,7 +230,6 @@ with col2:
 # Esto fuerza la carga de variables antes del botón
 texto_tesis, texto_discursos = cargar_conocimiento()
 
-response = model.generate_content(prompt_sistema)
 if boton:
     if tema_usuario:
         with st.spinner("Procesando matriz de significantes..."):
@@ -342,6 +341,7 @@ if boton:
                     
                     # 2. PARSEO: Intentamos convertir el texto a Diccionario
                     resultado_json = json.loads(texto_limpio)
+                    datos = resultado_json
 
                 except json.JSONDecodeError:
                     # SI FALLA EL FORMATO: Creamos un diccionario de emergencia
@@ -424,6 +424,7 @@ if boton:
 
     else:
         st.warning("Por favor ingresá un tema para consultar a la Máquina.")
+
 
 
 
