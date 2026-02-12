@@ -184,7 +184,7 @@ Esta API está alimentada exclusivamente por los resultados de la investigación
 ⚙️ *El modelo se encuentra actualmente en fase de calibración.*
 """)
 
-with st.expander("**Ficha técnica y metodoloía**(Clic para desplegar)", expanded=False):
+with st.expander("**Ficha técnica y metodología**(Clic para desplegar)", expanded=False):
     
     col_a, col_b = st.columns([0.2, 0.8])
     
@@ -216,7 +216,7 @@ with st.expander("¿Comó funciona **La Maquina de Alem**?", expanded=False):
     2.  **Procesamiento:** Genera una postura doctrinaria (Rojo) y una justificación teórica (Blanco).
     3.  **Evidencia:** Rastrea citas textuales en el corpus de discursos cargado en el sistema (Gris).
     """)
-tema_usuario = st.text_input("", placeholder="Escribi acá")
+tema_usuario = st.text_input("", placeholder="Escribí acá un tema (ej: Educación pública, Inflación, Presupuesto universitario)")
 
 col1, col2 = st.columns([0.65, 0.35])
 with col1:
@@ -426,6 +426,7 @@ if boton:
 
     else:
         st.warning("Por favor ingresá un tema para consultar a la Máquina.")
+
 
 
 
