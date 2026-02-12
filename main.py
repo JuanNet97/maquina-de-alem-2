@@ -335,13 +335,18 @@ if boton:
                 import json
                 import re
 
-                try:
-                    # 1. LIMPIEZA: Sacamos los ```json y ``` que a veces manda la IA
-                    texto_limpio = response.text.replace("```json", "").replace("```", "").strip()
-                    
-                    # 2. PARSEO: Intentamos convertir el texto a Diccionario
-                    resultado_json = json.loads(texto_limpio)
-                    datos = resultado_json
+                # 1. LIMPIEZA: Usamos la variable correcta 'respuesta' y el formato de OpenAI
+                texto_limpio = respuesta.choices[0].message.content
+                
+                # Limpiamos los bloques de código si la IA los mandó
+                texto_limpio = texto_limpio.replace("```json", "").replace("```", "").strip()
+                
+                # 2. PARSEO
+                import json
+                resultado_json = json.loads(texto_limpio)
+                
+                # 3. ASIGNACIÓN CRÍTICA (Para que el resto del código funcione)
+                datos = resultado_json
 
                 except json.JSONDecodeError:
                     # SI FALLA EL FORMATO: Creamos un diccionario de emergencia
@@ -424,6 +429,7 @@ if boton:
 
     else:
         st.warning("Por favor ingresá un tema para consultar a la Máquina.")
+
 
 
 
