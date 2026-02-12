@@ -165,6 +165,40 @@ texto_tesis, texto_discursos = cargar_conocimiento()
 # COMPATIBILIDAD (Para que no explote si algo viejo busca esta variable)
 base_de_conocimiento = texto_tesis
 
+texto_tesis, texto_discursos = cargar_conocimiento()
+
+# --- 💉 INYECCIÓN DE EMERGENCIA (PARA QUE LOS LEA SÍ O SÍ) ---
+# Pegamos esto directo en el código para ignorar problemas del archivo .txt
+refuerzo_nuevos = """
+*** DOCUMENTO 10 ***
+AUTOR: CRISÓLOGO LARRALDE (1954)
+TEXTO:
+Queremos una revisión del ordenamiento capitalista. Queremos sacar el oro de la posición de símbolo augusto y poner en su lugar al hombre.
+No hay lugar más frío ni más duro que vivir durmiendo sobre montañas de oro.
+El peronismo dice “La libertad no sirve para comer”. Nosotros decimos que la libertad es lo único que sirve.
+
+*** DOCUMENTO 11 ***
+AUTOR: CRISÓLOGO LARRALDE (1959)
+TEXTO:
+Desentenderse de la política es no querer saber cuánto se va a pagar por el pan.
+Todos tenemos que ser políticos. El político es un desdichado que sigue caminando porque tiene un deber que cumplir.
+
+*** DOCUMENTO 12 ***
+AUTOR: FLORENTINA GÓMEZ MIRANDA (1987)
+TEXTO:
+Se dice que el divorcio destruye la familia. Yo digo que lo que destruye la familia es la falta de amor.
+Mantener un matrimonio sin amor es una hipocresía.
+La ley debe ser laica. Las conciencias religiosas son respetables, pero no pueden imponerse a la ley civil.
+
+*** DOCUMENTO 13 ***
+AUTOR: FLORENTINA GÓMEZ MIRANDA (1996)
+TEXTO:
+Si una mujer entra a la política, cambia la mujer. Si muchas mujeres entran, cambia la política.
+No pedimos privilegios, pedimos igualdad. El cupo no es un techo, es un piso.
+"""
+
+# ACÁ OCURRE LA MAGIA: Sumamos el texto manual al que vino del archivo
+texto_discursos = texto_discursos + "\n" + refuerzo_nuevos
 # --- 4. INTERFAZ DE USUARIO ---
 
 # --- B. CUERPO PRINCIPAL ---
@@ -372,6 +406,7 @@ if boton:
 
     else:
         st.warning("Por favor ingresá un tema para consultar a la Máquina.")
+
 
 
 
