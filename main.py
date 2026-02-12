@@ -227,10 +227,6 @@ with col2:
 # Esto fuerza la carga de variables antes del botón
 texto_tesis, texto_discursos = cargar_conocimiento()
 
-# Esto nos muestra en pantalla si leyó el archivo o no
-st.write(f"Longitud Tesis: {len(texto_tesis)} caracteres")
-st.write(f"Longitud Discursos: {len(texto_discursos)} caracteres") 
-# ------------------------------
 
 if boton:
     if tema_usuario:
@@ -376,6 +372,7 @@ if boton:
 
     else:
         st.warning("Por favor ingresá un tema para consultar a la Máquina.")
+
 
 
 
