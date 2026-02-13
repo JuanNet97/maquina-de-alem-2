@@ -356,18 +356,33 @@ if boton:
             }}
             """
 
-            try:
-                # Temperatura 0.2: Rigor máximo para que respete la lista
-                respuesta = client.chat.completions.create(
-                    model="gpt-4o-mini", 
-                    response_format={"type": "json_object"},
-                    messages=[
-                        {"role": "system", "content": prompt_sistema},
-                        {"role": "user", "content": f"Tema: {tema_usuario}. Clasifica usando la lista cerrada."}
-                    ],
-                    temperature=0.2 
-                )
-                
+           try:
+            respuesta = client.chat.completions.create(
+                model="gpt-4o-mini",
+                response_format={"type": "json_object"}, # Fuerza a la IA a mandar JSON
+                messages=[
+                    {"role": "system", "content": prompt_sistema},
+                    {"role": "user", "content": f"Tema: {tema_usuario}"}
+                ],
+                temperature=0.2
+            )
+
+            # Extraemos el contenido crudo
+            contenido_crudo = respuesta.choices[0].message.content
+            
+            # Cargamos el JSON
+            datos = json.loads(contenido_crudo)
+
+            # VALIDACIÓN CRÍTICA: Si falta la clave, lanzamos un error manual para que no pase al visual
+            if "frase_radical" not in datos:
+                raise ValueError("La IA no generó la frase política necesaria.")
+
+        except json.JSONDecodeError:
+            st.error("❌ La respuesta de la IA no es un JSON válido. Reintentá.")
+            st.stop()
+        except Exception as e:
+            st.error(f"❌ Error de procesamiento: {e}")
+            st.stop()
               # --- PROCESAMIENTO BLINDADO DE JSON ---
                 import json
                 import re
@@ -470,6 +485,7 @@ if boton:
 
     else:
         st.warning("Por favor ingresá un tema para consultar a la Máquina.")
+
 
 
 
