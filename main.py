@@ -395,7 +395,7 @@ if boton:
                 # --- OUTPUT VISUAL ---
 
                 # 1. Línea Discursiva (Rojo)
-               html_frase = f"""
+                html_frase = f"""
                 <div class="headline-box">
                     <p style="color: #FFFFFF !important; font-family: 'Georgia', serif !important; font-weight: bold !important; font-size: 1.4rem !important; text-transform: none !important; line-height: 1.3 !important; margin: 0;">
                         "{datos['frase_radical']}"
@@ -453,6 +453,7 @@ if boton:
 
     else:
         st.warning("Por favor ingresá un tema para consultar a la Máquina.")
+
 
 
 
