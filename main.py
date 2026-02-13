@@ -317,8 +317,13 @@ if boton:
             - ⚠️ PROHIBIDO usar "Justicia Social" por defecto. Úsalo SOLO si el tema es estrictamente económico o de pobreza
 
             PASO 2: REDACCIÓN POLÍTICA (Recuadro Rojo)
-            - Redacta una sentencia política de 2 o 3 oraciones. Tono doctrinario.
-            
+            - Redacta una sentencia política de 2 o 3 oraciones. Tono doctrinario con la cadencia de la oratoria radical (estilo Alfonsín, Illia o Alem).
+            - TONO: Épico, ético, austero y republicano. Evita palabras modernas como "gestión" o "management"; usa "misión", "causa", "civismo" o "reparación".
+            - ESTRUCTURA: 
+            1. Empieza con una afirmación de principios sobre el tema. 
+            2. Sigue con la exigencia ética que el radicalismo impone frente a esa realidad.
+            3. Termina con una sentencia breve y contundente que cierre la postura.
+            - REGLA DE ORO: Debe sonar como algo que se podría decir en un atril de madera o en una plaza, no en una oficina.
 
             PASO 3: BÚSQUEDA SEMÁNTICA DE EVIDENCIA (MODO ESTRICTO)
             - Tu objetivo es encontrar una cita que hable ESPECÍFICAMENTE del tema "{tema_usuario}".
@@ -452,6 +457,7 @@ if boton:
 
     else:
         st.warning("Por favor ingresá un tema para consultar a la Máquina.")
+
 
 
 
