@@ -395,15 +395,14 @@ if boton:
                 # --- OUTPUT VISUAL ---
 
                 # 1. Línea Discursiva (Rojo)
-                html_frase = f"""
+               html_frase = f"""
                 <div class="headline-box">
-                    <p style="font-size: 1.3rem !important; line-height: 1.4 !important; font-weight: 700 !important; font-family: 'Georgia', serif !important; text-transform: none !important;">
+                    <p style="color: #FFFFFF !important; font-family: 'Georgia', serif !important; font-weight: bold !important; font-size: 1.4rem !important; text-transform: none !important; line-height: 1.3 !important; margin: 0;">
                         "{datos['frase_radical']}"
                     </p>
                 </div>
                 """
                 st.markdown(html_frase, unsafe_allow_html=True)
-
                 # 2. Explicación del Significante (Blanco)
                 html_tesis = f"""
                 <div class="thesis-box">
@@ -454,6 +453,7 @@ if boton:
 
     else:
         st.warning("Por favor ingresá un tema para consultar a la Máquina.")
+
 
 
 
