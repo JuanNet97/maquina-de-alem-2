@@ -48,7 +48,6 @@ st.markdown("""
         text-transform: none !important;
         margin: 0 !important;
     }
-    }
 
     /* CAJA 2: TESIS (Análisis - Recuadro Blanco) */
     .thesis-box {
@@ -453,6 +452,7 @@ if boton:
 
     else:
         st.warning("Por favor ingresá un tema para consultar a la Máquina.")
+
 
 
 
