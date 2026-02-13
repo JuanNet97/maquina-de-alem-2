@@ -297,6 +297,11 @@ if boton:
             # 2. TU PROMPT (Intacto)
             prompt_sistema = f"""
             Eres "La Máquina de Alem". Tu objetivo es la DIVULGACIÓN CIENTÍFICA de la Tesis de Maestría provista.
+            INSTRUCCIÓN DE RIGOR HISTÓRICO:
+            - Antes de asignar un autor a una cita, verifica en la FUENTE 2.
+            - Si el texto dice "Manifiesto Liminar", el autor es "Reforma Universitaria (1918)". 
+            - NO le asignes frases de la Reforma a Lebensohn ni a Alfonsín por proximidad temática.
+            - Si no estás seguro del autor en la FUENTE 2, pon "Registro Histórico UCR".
             
             FUENTE 1 (LA TESIS - El Cerebro):
             {texto_tesis}
@@ -505,6 +510,7 @@ if boton:
 
     else:
         st.warning("Por favor ingresá un tema para consultar a la Máquina.")
+
 
 
 
