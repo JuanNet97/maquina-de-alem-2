@@ -326,12 +326,15 @@ if boton:
             - REGLA DE ORO: Debe sonar como algo que se podría decir en un atril de madera o en una plaza, no en una oficina.
 
             PASO 3: BÚSQUEDA SEMÁNTICA DE EVIDENCIA (MODO ESTRICTO)
-            - Tu objetivo es encontrar una cita que hable ESPECÍFICAMENTE del tema "{tema_usuario}".
-            - ⚠️ PRIORIDAD ALTA: Busca primero palabras clave literales del tema (ej: si el tema es "Divorcio", busca la palabra "divorcio" o "familia" en el texto).
-            - Busca en todo el documento (hasta el final).
-            - Solo si no encuentras nada específico, busca una cita general sobre el Significante.
-            - Extrae la cita LITERAL de la FUENTE 2.
-            - Si la cita no está en la FUENTE 2, devuelve "null" aunque el tema sea coherente. No inventes.
+           PASO 3: BÚSQUEDA SEMÁNTICA DE EVIDENCIA (MODO CAZADOR)
+            - Tu prioridad absoluta es encontrar una cita en la FUENTE 2.
+            - 1ra Opción: Una cita que mencione el tema "{tema_usuario}" o algo relacionado.
+            - 2da Opción (FALLBACK): Si el tema no está literal, buscá la cita más ICONICA y potente de la FUENTE 2 que represente el "Significante" elegido. 
+            - No te rindas. Si el significante es "Ética Pública", buscá la frase más fuerte de Alem o Illia sobre la honestidad, aunque no hablen del tema exacto del usuario.
+
+            PASO 5: EVIDENCIA (Recuadro Gris)
+            - Extrae el fragmento LITERAL de la FUENTE 2.
+            - ⚠️ NUNCA inventes una cita. Si realmente no hay nada en la Fuente 2 (lo cual es raro), solo ahí devuelve "null".
 
             PASO 4: JUSTIFICACIÓN TEÓRICA (Recuadro Blanco)
             - Explica la conexión entre el tema y el significante usando la lógica de la FUENTE 1 (Tesis).
@@ -457,6 +460,7 @@ if boton:
 
     else:
         st.warning("Por favor ingresá un tema para consultar a la Máquina.")
+
 
 
 
