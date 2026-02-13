@@ -404,20 +404,28 @@ if boton:
                 # --- OUTPUT VISUAL ---
 
                 # 1. Línea Discursiva (Rojo)
+              # 1. LÍNEA DISCURSIVA (RECUADRO ROJO)
+                # El .get() evita que la app muera si la IA no manda la clave exacta
+                frase_radical = datos.get("frase_radical", "La Máquina está procesando el pensamiento...")
+                
                 html_frase = f"""
                 <div class="headline-box">
-                    <p style="color: #FFFFFF !important; font-family: 'Georgia', serif !important; font-weight: bold !important; font-size: 1.4rem !important; text-transform: none !important; line-height: 1.3 !important; margin: 0;">
-                        "{datos['frase_radical']}"
+                    <p style="color: #FFFFFF !important; font-family: 'Georgia', serif !important; font-weight: bold !important; font-size: 1.4rem !important; text-transform: none !important; margin: 0; line-height: 1.3;">
+                        "{frase_radical}"
                     </p>
                 </div>
                 """
                 st.markdown(html_frase, unsafe_allow_html=True)
-                # 2. Explicación del Significante (Blanco)
+
+                # 2. EXPLICACIÓN DEL SIGNIFICANTE (RECUADRO BLANCO)
+                nombre_meme = datos.get("nombre_meme", "Significante")
+                explicacion = datos.get("explicacion_meme", "Analizando matriz discursiva...")
+                
                 html_tesis = f"""
                 <div class="thesis-box">
-                    <span style="font-size:0.8rem; font-weight:bold; color:#9E9E9E; display:block;">SIGNIFICANTE ACTIVADO (TESIS)</span>
-                    <span style="color:#D32F2F; font-weight:900; font-size:1.4rem; text-transform:uppercase;">{datos['nombre_meme']}</span><br>
-                    {datos['explicacion_meme']}
+                    <span class="thesis-label">SIGNIFICANTE ACTIVADO (TESIS)</span>
+                    <span style="color:#D32F2F; font-weight:900; font-size:1.4rem; text-transform:uppercase; display:block; margin-bottom:10px;">{nombre_meme}</span>
+                    <div style="color: #333333 !important;">{explicacion}</div>
                 </div>
                 """
                 st.markdown(html_tesis, unsafe_allow_html=True)
@@ -462,6 +470,7 @@ if boton:
 
     else:
         st.warning("Por favor ingresá un tema para consultar a la Máquina.")
+
 
 
 
