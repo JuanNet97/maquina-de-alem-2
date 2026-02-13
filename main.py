@@ -32,22 +32,22 @@ st.markdown("""
     /* CAJA 1: LA FRASE RADICAL (Impacto - Recuadro Rojo) */
     .headline-box {
         background-color: #D32F2F !important;
-        /* 1. Color Blanco puro */
-        color: #FFFFFF !important; 
-        padding: 25px;
-        text-align: center;
-        /* 2. Fuente Georgia */
-        font-family: 'Georgia', serif !important; 
-        /* 3. Negrita (Bold) */
-        font-weight: bold !important; 
-        font-size: 1.4rem !important; 
-        text-transform: none !important; 
-        border-radius: 5px;
-        margin-bottom: 25px;
-        line-height: 1.3 !important;
+        padding: 25px !important;
+        text-align: center !important;
+        border-radius: 5px !important;
+        margin-bottom: 25px !important;
         border: 2px solid #B71C1C !important;
-        /* Opcional: una leve sombra para que la letra 'despegue' del rojo */
-        text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+    }
+
+    /* El texto de adentro (Blanco, Georgia, Negrita) */
+    .headline-box p {
+        color: #FFFFFF !important; 
+        font-family: 'Georgia', serif !important;
+        font-weight: bold !important;
+        font-size: 1.4rem !important;
+        text-transform: none !important;
+        margin: 0 !important;
+    }
     }
 
     /* CAJA 2: TESIS (Análisis - Recuadro Blanco) */
@@ -453,6 +453,7 @@ if boton:
 
     else:
         st.warning("Por favor ingresá un tema para consultar a la Máquina.")
+
 
 
 
