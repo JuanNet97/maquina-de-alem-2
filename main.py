@@ -261,7 +261,7 @@ if boton:
     if tema_usuario:
         with st.spinner("Procesando matriz de significantes..."):
             
-            # 1. TU LISTA EXACTA (Sin cambios)
+            # 1. TU LISTA DE SIGNIFICANTES (Intacta)
             lista_significantes = """
             1. "Ética Pública": Compromiso con la transparencia, honestidad y rechazo a la corrupción. (Ref: Alem, Illia, Alfonsín, De la Rúa, Manes, Lebensohn).
                -> USAR ESPECÍFICAMENTE PARA: Casos de corrupción, Ficha Limpia, privilegios de la política, sueldos de funcionarios, transparencia en la gestión, honestidad personal.
@@ -294,7 +294,7 @@ if boton:
                -> USAR ESPECÍFICAMENTE PARA: Modernización, Progreso, Tecnología, combatir el "atraso", romper el status quo, nuevas ideas vs. viejas prácticas.
             """
 
-            # 2. TU PROMPT EXACTO (Sin cambios)
+            # 2. TU PROMPT (Intacto)
             prompt_sistema = f"""
             Eres "La Máquina de Alem". Tu objetivo es la DIVULGACIÓN CIENTÍFICA de la Tesis de Maestría provista.
             
@@ -325,7 +325,6 @@ if boton:
             3. Termina con una sentencia breve y contundente que cierre la postura.
             - REGLA DE ORO: Debe sonar como algo que se podría decir en un atril de madera o en una plaza, no en una oficina.
 
-            PASO 3: BÚSQUEDA SEMÁNTICA DE EVIDENCIA (MODO ESTRICTO)
             PASO 3: BÚSQUEDA SEMÁNTICA DE EVIDENCIA (MODO CAZADOR)
             - Tu prioridad absoluta es encontrar una cita en la FUENTE 2.
             - 1ra Opción: Una cita que mencione el tema "{tema_usuario}" o algo relacionado.
@@ -333,10 +332,6 @@ if boton:
             - No te rindas. Si el significante es "Ética Pública", buscá la frase más fuerte de Alem o Illia sobre la honestidad, aunque no hablen del tema exacto del usuario.
             -⚠️ METADATOS: Identifica el autor y el año REAL que figuran en la FUENTE 2.
             - Si el año no figura en el texto, NO LO INVENTES. Poné solo el nombre del autor o "Registro histórico".
-
-            PASO 5: EVIDENCIA (Recuadro Gris)
-            - Extrae el fragmento LITERAL de la FUENTE 2.
-            - ⚠️ NUNCA inventes una cita. Si realmente no hay nada en la Fuente 2 (lo cual es raro), solo ahí devuelve "null".
 
             PASO 4: JUSTIFICACIÓN TEÓRICA (Recuadro Blanco)
             - Explica la conexión entre el tema y el significante usando la lógica de la FUENTE 1 (Tesis).
@@ -357,7 +352,7 @@ if boton:
             """
 
             try:
-                # 3. EJECUCIÓN
+                # 3. LLAMADA A LA API (Indentada correctamente)
                 respuesta = client.chat.completions.create(
                     model="gpt-4o-mini",
                     response_format={"type": "json_object"},
@@ -368,44 +363,45 @@ if boton:
                     temperature=0.2
                 )
 
-                datos = json.loads(respuesta.choices[0].message.content)
+                contenido_crudo = respuesta.choices[0].message.content
+                datos = json.loads(contenido_crudo)
 
-                # --- 4. SALIDA VISUAL (Respetando tus pedidos de diseño) ---
+                # --- 4. SALIDA VISUAL (Con tu diseño y tipografías originales) ---
                 
-                # Recuadro Rojo (Frase: Blanca, Georgia, Bold, Sin Mayúsculas forzadas)
+                # Recuadro Rojo: El único con Georgia Blanca forzada como pediste
                 frase = datos.get("frase_radical", "Analizando...")
                 st.markdown(f"""
-                <div style="background-color: #D32F2F; padding: 25px; border-radius: 5px; text-align: center; margin-bottom: 25px;">
-                    <p style="color: #FFFFFF !important; font-family: 'Georgia', serif !important; font-weight: bold !important; font-size: 1.4rem !important; text-transform: none !important; margin: 0;">
+                <div class="headline-box">
+                    <p style="color: #FFFFFF !important; font-family: 'Georgia', serif !important; font-weight: bold !important; font-size: 1.4rem !important; text-transform: none !important; margin: 0; line-height: 1.4;">
                         "{frase}"
                     </p>
                 </div>
                 """, unsafe_allow_html=True)
 
-                # Recuadro Blanco (Tesis)
+                # Recuadro Blanco: Respeta tus clases CSS originales
                 nombre_sig = datos.get("nombre_meme", "Significante")
                 explicacion = datos.get("explicacion_meme", "")
                 st.markdown(f"""
-                <div style="background-color: #FFFFFF; padding: 20px; border-left: 10px solid #212121; border-radius: 5px; margin-bottom: 20px;">
-                    <span style="font-size: 0.8rem; font-weight: 800; color: #9E9E9E; text-transform: uppercase;">SIGNIFICANTE ACTIVADO</span><br>
-                    <span style="color: #D32F2F; font-weight: 900; font-size: 1.4rem;">{nombre_sig}</span><br>
-                    <div style="color: #333333; font-family: 'Georgia', serif;">{explicacion}</div>
+                <div class="thesis-box">
+                    <span class="thesis-label">SIGNIFICANTE ACTIVADO</span>
+                    <span class="meme-name">{nombre_sig}</span>
+                    <div>{explicacion}</div>
                 </div>
                 """, unsafe_allow_html=True)
 
-                # Recuadro Gris (Cita)
+                # Recuadro Gris: Respeta tus clases CSS originales
                 cita = datos.get("cita_historica")
                 if cita and cita != "null":
-                    autor = datos.get("autor_cita", "Fuente")
+                    autor_anio = datos.get("autor_cita", "Registro histórico")
                     st.markdown(f"""
-                    <div style="background-color: #ECEFF1; padding: 20px; border-right: 8px solid #B71C1C; border-radius: 5px; font-style: italic; color: #37474F;">
+                    <div class="quote-box">
                         &laquo;{cita}&raquo;
-                        <div style="text-align: right; font-weight: bold; color: #B71C1C; margin-top: 10px;">— {autor}</div>
+                        <div class="quote-author">— {autor_anio}</div>
                     </div>
                     """, unsafe_allow_html=True)
 
             except Exception as e:
-                st.error(f"Error: {e}")
+                st.error(f"❌ Error de procesamiento: {e}")
               # --- PROCESAMIENTO BLINDADO DE JSON ---
                 import json
                 import re
@@ -508,6 +504,7 @@ if boton:
 
     else:
         st.warning("Por favor ingresá un tema para consultar a la Máquina.")
+
 
 
 
