@@ -266,9 +266,9 @@ if boton:
             1. "Ética Pública": Compromiso con la transparencia, honestidad y rechazo a la corrupción. (Ref: Alem, Illia, Alfonsín, De la Rúa, Manes, Lebensohn).
                -> USAR ESPECÍFICAMENTE PARA: Casos de corrupción, Ficha Limpia, privilegios de la política, sueldos de funcionarios, transparencia en la gestión, honestidad personal.
 
-            2. "Democracia": Defensa activa de las instituciones, participación popular y libertades civiles. (Ref: Alem, Yrigoyen, Illia, Alfonsín, Manes).
-               -> USAR ESPECÍFICAMENTE PARA: Voto, fraude, Derechos Humanos, libertad de expresión. (IMPORTANTE: Incluir aquí temas de DERECHOS CIVILES como Divorcio, Matrimonio Igualitario, Género y Feminismo - Florentina Gómez Miranda).
-
+            2. "Democracia": Defensa activa de las instituciones, participación popular y libertades civiles. (Ref: Alem, Yrigoyen, Illia, Alfonsín, Manes Florentina Gómez Miranda).
+               -> USAR ESPECÍFICAMENTE PARA: Voto, fraude, Derechos Humanos, libertad de expresión. (IMPORTANTE: Incluir aquí temas de DERECHOS CIVILES como Divorcio, Matrimonio Igualitario, Género y Feminismo)
+          
             3. "Juventud": Interpelación a la juventud como sujeto clave de transformación. (Ref: Alem, Alfonsín, Manes, Lebensohn, Junta Coordinadora NacionaL- Juventud Radical).
                -> USAR ESPECÍFICAMENTE PARA: Estudiantes, Universidad Pública, Reforma del 18, Franja Morada, emigración de jóvenes, futuro, cerebro/ciencia.
 
@@ -278,7 +278,7 @@ if boton:
             5. "Sacrificio": Compromiso ético y personal extremo por ideales políticos. (Ref: Alem, Yrigoyen, Alfonsín).
                -> USAR ESPECÍFICAMENTE PARA: Austeridad, renunciamientos históricos, militancia desinteresada, "dar la vida", anti-frivolidad.
 
-            6. "Unidad Nacional": Cohesión social y política frente a crisis graves. (Ref: Yrigoyen, Alfonsín, De la Rúa, Manes, Balbin).
+            6. "Unidad Nacional": Cohesión social y política frente a crisis graves. (Ref: Yrigoyen, Alfonsín, De la Rúa, Manes, Balbín).
                -> USAR ESPECÍFICAMENTE PARA: La Grieta, violencia política, Pacto de Mayo, acuerdos, diálogo, convivencia democrática, "terminar con el odio".
 
             7. "Justicia Social": Distribución equitativa de recursos y oportunidades. (Ref: Illia, Alfonsín, Manes, Larralde, Federacion Universitaria de Córdoba).
@@ -505,6 +505,7 @@ if boton:
 
     else:
         st.warning("Por favor ingresá un tema para consultar a la Máquina.")
+
 
 
 
