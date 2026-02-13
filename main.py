@@ -338,6 +338,7 @@ if boton:
 
             PASO 5: EVIDENCIA (Recuadro Gris)
             - Extrae el fragmento literal encontrado en la FUENTE 2.
+            - ⚠️ NUNCA inventes una cita. Si realmente no hay nada en la Fuente 2 (lo cual es raro), solo ahí devuelve "null".
 
             FORMATO JSON:
             {{
@@ -504,6 +505,7 @@ if boton:
 
     else:
         st.warning("Por favor ingresá un tema para consultar a la Máquina.")
+
 
 
 
