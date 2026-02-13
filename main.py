@@ -127,10 +127,7 @@ st.markdown("""
     .stButton > button:focus, .stButton > button:active {
         color: #FFFFFF !important;
         background-color: #000000 !important;
-    }
-    </style>
-    """, unsafe_allow_html=True)
-/* FORZAR ESTILO EN EXPANDERS (Ficha Técnica y Cómo funciona) */
+ /* FORZAR ESTILO EN EXPANDERS (Ficha Técnica y Cómo funciona) */
     .streamlit-expanderHeader {
         background-color: white !important;
         color: #333333 !important;
@@ -154,7 +151,9 @@ st.markdown("""
     .stExpander svg {
         fill: #D32F2F !important;
     }
-
+  }
+    </style>
+    """, unsafe_allow_html=True)
 # --- 2. CONEXIÓN CON OPENAI ---
 if "OPENAI_API_KEY" in st.secrets:
     client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
@@ -450,6 +449,7 @@ if boton:
 
     else:
         st.warning("Por favor ingresá un tema para consultar a la Máquina.")
+
 
 
 
