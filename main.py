@@ -331,6 +331,8 @@ if boton:
             - 1ra Opción: Una cita que mencione el tema "{tema_usuario}" o algo relacionado.
             - 2da Opción (FALLBACK): Si el tema no está literal, buscá la cita más ICONICA y potente de la FUENTE 2 que represente el "Significante" elegido. 
             - No te rindas. Si el significante es "Ética Pública", buscá la frase más fuerte de Alem o Illia sobre la honestidad, aunque no hablen del tema exacto del usuario.
+            -⚠️ METADATOS: Identifica el autor y el año REAL que figuran en la FUENTE 2.
+            - Si el año no figura en el texto, NO LO INVENTES. Poné solo el nombre del autor o "Registro histórico".
 
             PASO 5: EVIDENCIA (Recuadro Gris)
             - Extrae el fragmento LITERAL de la FUENTE 2.
@@ -348,7 +350,7 @@ if boton:
                 "nombre_meme": "NOMBRE EXACTO DEL SIGNIFICANTE",
                 "explicacion_meme": "Justificación teórica basada en Fuente 1...",
                 "cita_historica": "Texto literal encontrado en Fuente 2 O null",
-                "autor_cita": "Autor y año O null",
+                "autor_cita": "Nombre del Autor (Año) - Solo si el año está en la Fuente 2",
                 "estilo_visual": "ÉPICA CALLEJERA, INSTITUCIONAL SOLEMNE o MODERNISMO ABSTRACTO",
                 "prompt_meme": "Descripción visual"
             }}
@@ -460,6 +462,7 @@ if boton:
 
     else:
         st.warning("Por favor ingresá un tema para consultar a la Máquina.")
+
 
 
 
