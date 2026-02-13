@@ -261,7 +261,7 @@ if boton:
     if tema_usuario:
         with st.spinner("Procesando matriz de significantes..."):
             
-            # 1. Definimos TU LISTA EXACTA como la "Constitución" del modelo
+            # 1. TU LISTA EXACTA (Sin cambios)
             lista_significantes = """
             1. "Ética Pública": Compromiso con la transparencia, honestidad y rechazo a la corrupción. (Ref: Alem, Illia, Alfonsín, De la Rúa, Manes, Lebensohn).
                -> USAR ESPECÍFICAMENTE PARA: Casos de corrupción, Ficha Limpia, privilegios de la política, sueldos de funcionarios, transparencia en la gestión, honestidad personal.
@@ -294,7 +294,7 @@ if boton:
                -> USAR ESPECÍFICAMENTE PARA: Modernización, Progreso, Tecnología, combatir el "atraso", romper el status quo, nuevas ideas vs. viejas prácticas.
             """
 
-           # --- PROMPT: TRADUCCIÓN SEMÁNTICA HISTÓRICA ---
+            # 2. TU PROMPT EXACTO (Sin cambios)
             prompt_sistema = f"""
             Eres "La Máquina de Alem". Tu objetivo es la DIVULGACIÓN CIENTÍFICA de la Tesis de Maestría provista.
             
@@ -326,7 +326,7 @@ if boton:
             - REGLA DE ORO: Debe sonar como algo que se podría decir en un atril de madera o en una plaza, no en una oficina.
 
             PASO 3: BÚSQUEDA SEMÁNTICA DE EVIDENCIA (MODO ESTRICTO)
-           PASO 3: BÚSQUEDA SEMÁNTICA DE EVIDENCIA (MODO CAZADOR)
+            PASO 3: BÚSQUEDA SEMÁNTICA DE EVIDENCIA (MODO CAZADOR)
             - Tu prioridad absoluta es encontrar una cita en la FUENTE 2.
             - 1ra Opción: Una cita que mencione el tema "{tema_usuario}" o algo relacionado.
             - 2da Opción (FALLBACK): Si el tema no está literal, buscá la cita más ICONICA y potente de la FUENTE 2 que represente el "Significante" elegido. 
@@ -356,33 +356,56 @@ if boton:
             }}
             """
 
-        try:
+            try:
+                # 3. EJECUCIÓN
                 respuesta = client.chat.completions.create(
-                model="gpt-4o-mini",
-                response_format={"type": "json_object"}, # Fuerza a la IA a mandar JSON
-                messages=[
-                    {"role": "system", "content": prompt_sistema},
-                    {"role": "user", "content": f"Tema: {tema_usuario}"}
-                ],
-                temperature=0.2
-            )
+                    model="gpt-4o-mini",
+                    response_format={"type": "json_object"},
+                    messages=[
+                        {"role": "system", "content": prompt_sistema},
+                        {"role": "user", "content": f"Tema: {tema_usuario}"}
+                    ],
+                    temperature=0.2
+                )
 
-            # Extraemos el contenido crudo
-            contenido_crudo = respuesta.choices[0].message.content
-            
-            # Cargamos el JSON
-            datos = json.loads(contenido_crudo)
+                datos = json.loads(respuesta.choices[0].message.content)
 
-            # VALIDACIÓN CRÍTICA: Si falta la clave, lanzamos un error manual para que no pase al visual
-            if "frase_radical" not in datos:
-                raise ValueError("La IA no generó la frase política necesaria.")
+                # --- 4. SALIDA VISUAL (Respetando tus pedidos de diseño) ---
+                
+                # Recuadro Rojo (Frase: Blanca, Georgia, Bold, Sin Mayúsculas forzadas)
+                frase = datos.get("frase_radical", "Analizando...")
+                st.markdown(f"""
+                <div style="background-color: #D32F2F; padding: 25px; border-radius: 5px; text-align: center; margin-bottom: 25px;">
+                    <p style="color: #FFFFFF !important; font-family: 'Georgia', serif !important; font-weight: bold !important; font-size: 1.4rem !important; text-transform: none !important; margin: 0;">
+                        "{frase}"
+                    </p>
+                </div>
+                """, unsafe_allow_html=True)
 
-        except json.JSONDecodeError:
-            st.error("❌ La respuesta de la IA no es un JSON válido. Reintentá.")
-            st.stop()
-        except Exception as e:
-            st.error(f"❌ Error de procesamiento: {e}")
-            st.stop()
+                # Recuadro Blanco (Tesis)
+                nombre_sig = datos.get("nombre_meme", "Significante")
+                explicacion = datos.get("explicacion_meme", "")
+                st.markdown(f"""
+                <div style="background-color: #FFFFFF; padding: 20px; border-left: 10px solid #212121; border-radius: 5px; margin-bottom: 20px;">
+                    <span style="font-size: 0.8rem; font-weight: 800; color: #9E9E9E; text-transform: uppercase;">SIGNIFICANTE ACTIVADO</span><br>
+                    <span style="color: #D32F2F; font-weight: 900; font-size: 1.4rem;">{nombre_sig}</span><br>
+                    <div style="color: #333333; font-family: 'Georgia', serif;">{explicacion}</div>
+                </div>
+                """, unsafe_allow_html=True)
+
+                # Recuadro Gris (Cita)
+                cita = datos.get("cita_historica")
+                if cita and cita != "null":
+                    autor = datos.get("autor_cita", "Fuente")
+                    st.markdown(f"""
+                    <div style="background-color: #ECEFF1; padding: 20px; border-right: 8px solid #B71C1C; border-radius: 5px; font-style: italic; color: #37474F;">
+                        &laquo;{cita}&raquo;
+                        <div style="text-align: right; font-weight: bold; color: #B71C1C; margin-top: 10px;">— {autor}</div>
+                    </div>
+                    """, unsafe_allow_html=True)
+
+            except Exception as e:
+                st.error(f"Error: {e}")
               # --- PROCESAMIENTO BLINDADO DE JSON ---
                 import json
                 import re
@@ -485,6 +508,7 @@ if boton:
 
     else:
         st.warning("Por favor ingresá un tema para consultar a la Máquina.")
+
 
 
 
