@@ -296,7 +296,7 @@ if boton:
 
             # 2. TU PROMPT (Intacto)
             prompt_sistema = f"""
-            Eres "La Máquina de Alem". Tu objetivo es la DIVULGACIÓN CIENTÍFICA de la Tesis de Maestría provista.
+            Eres "La Máquina de Alem". Tu objetivo es la DIVULGACIÓN CIENTÍFICA de la Tesis de Maestría provista con el maximo rigo conceptual e historico.Tu rol es la gestion del archivo historico de la UCR.
             INSTRUCCIÓN DE RIGOR HISTÓRICO:
             - Antes de asignar un autor a una cita, verifica en la FUENTE 2.
             - Si el texto dice "Manifiesto Liminar", el autor es "Reforma Universitaria (1918)". 
@@ -366,7 +366,7 @@ if boton:
                         {"role": "system", "content": prompt_sistema},
                         {"role": "user", "content": f"Tema: {tema_usuario}"}
                     ],
-                    temperature=0.2
+                    temperature=0.1
                 )
 
                 contenido_crudo = respuesta.choices[0].message.content
@@ -510,6 +510,7 @@ if boton:
 
     else:
         st.warning("Por favor ingresá un tema para consultar a la Máquina.")
+
 
 
 
