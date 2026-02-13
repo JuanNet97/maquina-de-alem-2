@@ -33,15 +33,15 @@ st.markdown("""
     .headline-box {
         background-color: #D32F2F !important;
         color: white !important;
-        padding: 30px;
+        padding: 25px;
         text-align: center;
-        font-family: 'Arial Black', sans-serif;
-        font-size: 1.8rem;
-        text-transform: uppercase;
+        /* Cambiamos Arial Black por una Serif más elegante para minúsculas */
+        font-family: 'Georgia', serif !important; 
+        font-size: 1.4rem !important; 
+        text-transform: none !important; /* Permite minúsculas */
         border-radius: 5px;
         margin-bottom: 25px;
-        box-shadow: 0 5px 15px rgba(211, 47, 47, 0.3);
-        line-height: 1.1;
+        line-height: 1.3 !important;
         border: 2px solid #B71C1C !important;
     }
 
@@ -449,6 +449,7 @@ if boton:
 
     else:
         st.warning("Por favor ingresá un tema para consultar a la Máquina.")
+
 
 
 
