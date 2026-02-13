@@ -356,7 +356,7 @@ if boton:
             }}
             """
 
-           try:
+            try:
             respuesta = client.chat.completions.create(
                 model="gpt-4o-mini",
                 response_format={"type": "json_object"}, # Fuerza a la IA a mandar JSON
@@ -485,6 +485,7 @@ if boton:
 
     else:
         st.warning("Por favor ingresá un tema para consultar a la Máquina.")
+
 
 
 
