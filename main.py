@@ -219,6 +219,7 @@ with st.expander("**Ficha técnica y metodología**", expanded=False):
         st.markdown("""
         **PROYECTO:** La Máquina de Alem (v2.1)  
         **AUTOR:** Juan Ignacio Net  
+        **DIRECCIÓN:** Mg. Noeli Cristti
         **MAESTRÍA:** Comunicación Política (Univ. Austral)
         """)
 
@@ -510,6 +511,7 @@ if boton:
 
     else:
         st.warning("Por favor ingresá un tema para consultar a la Máquina.")
+
 
 
 
